@@ -1,8 +1,8 @@
 import unittest
+from os.path import exists as file_exists
 
 import PersistencyDDL
 from Persistency import Persistency
-from os.path import exists as file_exists
 
 
 class PersistencyTestCases(unittest.TestCase):
