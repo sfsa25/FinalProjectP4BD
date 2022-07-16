@@ -22,8 +22,7 @@ class Persistency:
         try:
             c = self.pre_statement(filePointer)
             c.execute(statement)
-            self.conn.commit()
-            self.conn.close()
+            self.post_statement()
         except Exception as e:
             logging.error(e)
             raise e
