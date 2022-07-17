@@ -20,3 +20,12 @@ class Menu:
             raise IndexError("Login format is invalid")
 
         return [login, passwd]
+
+    @staticmethod
+    def authorize(user):
+        if user.role == "ADMIN":
+            print("---Welcome admin " + user.login+" ---")
+        elif user.role == "DOCTOR":
+            print("---Welcome doctor " + user.login+" ---")
+        elif user.role == "ANALYST":
+            print("---Welcome analyst " + user.login+" ---")

@@ -9,9 +9,11 @@ class SessionManager:
         self.logged_user = None
 
     def auth_user(self, login, passwd):
-        query_result = self.persistency.execute_select_pandas(PersistencyDML.select_all_user + " WHERE LOGIN='" + login + "' AND CRYPTOGRAPHIC_PASSWD='" + passwd+"'")
-        if query_result:
-            self.logged_user = User(query_result[0], query_result[1])
-            return True
+        query_result = self.persistency.execute_select(
+            PersistencyDML.select_all_user + " WHERE LOGIN='" + login + "' AND CRYPTOGRAPHIC_PASSWD='" + passwd + "'")
 
-        return False
+        if not query_result:
+            return False
+
+        self.logged_user = User(query_result[0][1], query_result[0][2])
+        return True
