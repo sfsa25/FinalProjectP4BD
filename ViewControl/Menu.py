@@ -1,6 +1,7 @@
 import logging
 from typing import re
 
+import StaticPatterns
 from ViewControl.EntryValidation import EntryValidation
 import Menu
 
@@ -10,9 +11,9 @@ class Menu:
     @staticmethod
     def menu_auth():
         login = input("Enter your login: \n")
-        if EntryValidation.validateField(login, EntryValidation.LOGIN_PATTERN):
+        if EntryValidation.validateField(login, StaticPatterns.LOGIN_PATTERN):
             passwd = input("Enter your password: ")
-            if not EntryValidation.validateField(passwd, EntryValidation.PASSWD_PATTERN):
+            if not EntryValidation.validateField(passwd, StaticPatterns.PASSWD_PATTERN):
                 logging.ERROR("Invalid password format. Format accepted: 4 digits")
                 raise IndexError("Password format is invalid")
         else:
@@ -25,7 +26,22 @@ class Menu:
     def authorize(user):
         if user.role == "ADMIN":
             print("---Welcome admin " + user.login+" ---")
+            print("1 - Book an appointment")
+            print("Doctors Menu:")
+            print(" -- 2.1 - Find a doctor ")
+            print(" -- 2.2 - Register a new doctor")
+            print(" -- 2.3 - Create a schedule")
+            print("Patient Menu:")
+            print(" -- 3.1 - Find (or change) an appointment")
+            print(" -- 3.2 - Register a new patient")
+            print("4 - Reports")
         elif user.role == "DOCTOR":
             print("---Welcome doctor " + user.login+" ---")
+            print("Doctors Menu:\n")
+            print("1 - Find a doctor \n")
+            print("2 - Register a new doctor\n")
+            print("1 - Create a schedule\n")
         elif user.role == "ANALYST":
             print("---Welcome analyst " + user.login+" ---")
+
+        return input("Please type your chosen option here: \n")
