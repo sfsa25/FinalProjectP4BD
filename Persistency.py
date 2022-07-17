@@ -3,6 +3,7 @@ import logging
 import os
 import sqlite3
 import PersistencyDDL
+import pandas as pd
 
 
 class Persistency:
@@ -11,7 +12,7 @@ class Persistency:
         self.database = "Database/walkclinic.db"
         self.conn = None
 
-    def createtable(self, statement):
+    def execute_command(self, statement):
         try:
             c = self.pre_statement()
             c.execute(statement)
@@ -20,11 +21,11 @@ class Persistency:
             logging.error(e)
             raise e
 
-    def setuptables(self):
+    def setup_tables(self):
         for i in PersistencyDDL.list_table:
-            self.createtable(i)
+            self.execute_command(i)
 
-    def erasedatabase(self):
+    def erase_database(self):
         os.remove(self.database)
 
     def pre_statement(self):
@@ -34,3 +35,24 @@ class Persistency:
     def post_statement(self):
         self.conn.commit()
         self.conn.close()
+
+    def execute_select(self, statement):
+        try:
+            c = self.pre_statement()
+            c.execute(statement)
+            return c.fetchall()
+        except Exception as e:
+            logging.error(e)
+            raise e
+
+    def execute_select_pandas(self, statement):
+        try:
+            c = self.pre_statement()
+            df = pd.read_sql_query(statement, self.conn)
+            self.conn.close()
+            return df
+        except Exception as e:
+            logging.error(e)
+            raise e
+
+
