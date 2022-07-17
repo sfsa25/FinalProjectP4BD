@@ -12,19 +12,6 @@ class Persistency:
         self.database = "Database/walkclinic.db"
         self.conn = None
 
-    def execute_command(self, statement):
-        try:
-            c = self.pre_statement()
-            c.execute(statement)
-            self.post_statement()
-        except Exception as e:
-            logging.error(e)
-            raise e
-
-    def setup_tables(self):
-        for i in PersistencyDDL.list_table:
-            self.execute_command(i)
-
     def erase_database(self):
         os.remove(self.database)
 
@@ -35,6 +22,15 @@ class Persistency:
     def post_statement(self):
         self.conn.commit()
         self.conn.close()
+
+    def execute_command(self, statement):
+        try:
+            c = self.pre_statement()
+            c.execute(statement)
+            self.post_statement()
+        except Exception as e:
+            logging.error(e)
+            raise e
 
     def execute_select(self, statement):
         try:
@@ -55,4 +51,6 @@ class Persistency:
             logging.error(e)
             raise e
 
-
+    def setup_tables(self):
+        for i in PersistencyDDL.list_table:
+            self.execute_command(i)
