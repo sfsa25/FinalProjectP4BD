@@ -6,7 +6,6 @@ class Appointment():
         self.start_time = None
         self.end_time = None
 
-
     def __init__(self, patient_id,  doctor_id, start_time, end_time ):
         self.patient_id = patient_id
         self.doctor_id = doctor_id
