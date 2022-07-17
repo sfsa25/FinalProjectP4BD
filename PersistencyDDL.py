@@ -27,9 +27,8 @@ create_patient = """CREATE TABLE IF NOT EXISTS PATIENT(
                            GENDER CHAR NOT NULL,
                            DOB DATE NOT NULL,
                            EMAIL TEXT NOT NULL,
-                           DATA_CREATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                           DATA_CREATE TIMESTAMP DEFAULT CURRENT_TIMESTAMP)
                            """
-
 
 create_appointment = """CREATE TABLE IF NOT EXISTS APPOINTMENT(
                            ID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -38,7 +37,7 @@ create_appointment = """CREATE TABLE IF NOT EXISTS APPOINTMENT(
                            START_TIME DATETIME NOT NULL,
                            END_TIME DATETIME NOT NULL,
                            FOREIGN KEY(PATIENT_ID) REFERENCES PATIENT(ID),
-                           FOREIGN KEY(DOCTOR_ID) REFERENCES DOCTOR(ID)
+                           FOREIGN KEY(DOCTOR_ID) REFERENCES DOCTOR(ID))
                            """
 
 create_prescription = """CREATE TABLE IF NOT EXISTS PRESCRIPTION(
@@ -48,8 +47,17 @@ create_prescription = """CREATE TABLE IF NOT EXISTS PRESCRIPTION(
                            MEDICATION TEXT
                            DOSE TEXT,
                            OBSERVATION TEXT,
-                           FOREIGN KEY(APPOINTMENT_ID) REFERENCES APPOINTMENT(ID)
+                           FOREIGN KEY(APPOINTMENT_ID) REFERENCES APPOINTMENT(ID))
                            """
+drop_user = """DROP TABLE IF EXISTS USER"""
+drop_doctor = """DROP TABLE IF EXISTS DOCTOR"""
+drop_prescription = """DROP TABLE IF EXISTS PRESCRIPTION"""
+drop_specialty = """DROP TABLE IF EXISTS SPECIALTY"""
+drop_appointment = """DROP TABLE IF EXISTS PRESCRIPTION"""
+drop_patient= """DROP TABLE IF EXISTS PATIENT"""
+
+list_create_table = [create_user, create_specialty, create_doctor, create_patient, create_appointment, create_prescription]
+list_drop_table = [drop_doctor, drop_patient, drop_user, drop_specialty, drop_appointment]
+db_path = "Database/walkclinic.db"
 
 
-list_table = [create_user, create_specialty, create_doctor, create_patient, create_appointment, create_prescription]

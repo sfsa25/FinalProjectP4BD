@@ -2,6 +2,9 @@
 import logging
 import os
 import sqlite3
+
+from pandas.io.common import file_exists
+
 import PersistencyDDL
 import pandas as pd
 
@@ -9,11 +12,9 @@ import pandas as pd
 class Persistency:
 
     def __init__(self):
-        self.database = "Database/walkclinic.db"
+        self.database = PersistencyDDL.db_path
         self.conn = None
 
-    def erase_database(self):
-        os.remove(self.database)
 
     def pre_statement(self):
         self.conn = sqlite3.connect(self.database)
@@ -51,6 +52,16 @@ class Persistency:
             logging.error(e)
             raise e
 
-    def setup_tables(self):
-        for i in PersistencyDDL.list_table:
-            self.execute_command(i)
+    #create = 1
+    #drop   = 0
+    def setup_tables(self, create_or_drop):
+        list_to_use = ''
+        if create_or_drop:
+            list_to_use = PersistencyDDL.list_create_table
+        else:
+            list_to_use = PersistencyDDL.list_drop_table
+        try:
+            for i in list_to_use:
+                self.execute_command(i)
+        except Exception as e:
+            raise e
