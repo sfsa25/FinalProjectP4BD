@@ -1,12 +1,11 @@
 # DDL and main database "singleton" connection
 import logging
-import os
 import sqlite3
-
-from pandas.io.common import file_exists
 
 import PersistencyDDL
 import pandas as pd
+
+import PersistencyDML
 
 
 class Persistency:
@@ -14,7 +13,6 @@ class Persistency:
     def __init__(self):
         self.database = PersistencyDDL.db_path
         self.conn = None
-
 
     def pre_statement(self):
         self.conn = sqlite3.connect(self.database)
@@ -52,8 +50,8 @@ class Persistency:
             logging.error(e)
             raise e
 
-    #create = 1
-    #drop   = 0
+    # create = 1
+    # drop   = 0
     def setup_tables(self, create_or_drop):
         list_to_use = ''
         if create_or_drop:
@@ -62,6 +60,14 @@ class Persistency:
             list_to_use = PersistencyDDL.list_drop_table
         try:
             for i in list_to_use:
+                self.execute_command(i)
+        except Exception as e:
+            raise e
+
+
+    def setup_data(self):
+        try:
+            for i in PersistencyDML.list_initial_data:
                 self.execute_command(i)
         except Exception as e:
             raise e
