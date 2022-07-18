@@ -87,3 +87,6 @@ class Persistency:
             PersistencyDML.insert_user + "'" + doctor.user.login + "','" + doctor.user.passwd + "', '" + doctor.user.role + "')",
             PersistencyDML.insert_doctor + "(SELECT MAX(ID)+1 FROM USER), " + doctor.specialty + ")"]
         self.execute_transaction(statements)
+
+    def save_new_user(self, doctor):
+        pass
