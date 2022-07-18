@@ -1,6 +1,8 @@
 import logging
 
 from Doctor import Doctor
+from User import User
+from Doctor import Doctor
 from ViewControl.Menu import  Menu
 from ViewControl.SessionManager import SessionManager
 from Persistency import Persistency
@@ -10,30 +12,33 @@ per = Persistency()
 session = SessionManager(per)
 
 # Drop all tables
-per.setup_tables(0)
+#per.setup_tables(0)
 
 # Create all tables
-per.setup_tables(1)
-per.setup_data()
+#per.setup_tables(1)
+#per.setup_data()
 
 try:
 
     auth_info = Menu.menu_auth();
     if session.auth_user(auth_info[0], auth_info[1]):
-
         opt = Menu.authorize(session.logged_user)
         if opt == '1':
             # NO INPUTS HERE, PLEASE... HEAD TO MENU
             print('start flow book an appointment')
             pass
         elif opt == '2.1':
+            doc_login = Menu.get_doctor()
+            new_user = User(doc_login, None, None)
+            find_doc = Doctor(new_user, None)
+            new_doctor = find_doc.findDoctor(per)
+            doc_opt = Menu.doctor_option(doc_login)
+            pass;
+        elif opt == '2.2':
             # NO INPUTS HERE, PLEASE... HEAD TO MENU
             new_doctor = Menu.get_new_doctor()
             new_doctor.save_new_doctor(per)
             print('The new doctor ' + new_doctor.user.login + ' Successfully created!')
-            pass
-        elif opt == '2.2':
-            pass
         elif opt == '2.3':
             pass
         elif opt == '3.1':

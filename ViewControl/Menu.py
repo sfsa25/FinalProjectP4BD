@@ -58,3 +58,15 @@ class Menu:
         doc = Doctor(user, doc_specialty)
         logging.info("New Doctor instance created: doc.user.login: "+doc.user.login);
         return doc;
+
+    @staticmethod
+    def get_doctor():
+        print("--->REGISTER A NEW DOCTOR<---")
+        return input("PLEASE, TYPE THE DOCTOR'S LOGIN: ")
+
+    @staticmethod
+    def doctor_option(doc_login):
+        print('Doctor '+ doc_login + ' found!')
+        print('What would you like to do?:')
+        return input('0 - Exit, 1 - Create a schedule, 2 - Find an appointment')
+

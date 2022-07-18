@@ -73,6 +73,7 @@ class Persistency:
             for i in list_to_use:
                 self.execute_command(i)
         except Exception as e:
+            logging.error("WAS NOT POSSIBLE TO SETUP TABLES")
             raise e
 
     def setup_data(self):
@@ -80,13 +81,22 @@ class Persistency:
             for i in PersistencyDML.list_initial_data:
                 self.execute_command(i)
         except Exception as e:
+            logging.error("WAS NOT POSSIBLE TO LOAD INITIAL DATA INTO THE TABLES")
             raise e
 
     def insert_doctor_trans(self, doctor):
         statements = [
             PersistencyDML.insert_user + "'" + doctor.user.login + "','" + doctor.user.passwd + "', '" + doctor.user.role + "')",
-            PersistencyDML.insert_doctor + "(SELECT MAX(ID)+1 FROM USER), " + doctor.specialty + ")"]
+            PersistencyDML.insert_doctor + "(SELECT MAX(ID) FROM USER), " + doctor.specialty + ")"]
         self.execute_transaction(statements)
 
-    def save_new_user(self, doctor):
-        pass
+    def findDoctor(self, doctor):
+        self.findUser(doctor.user)
+        result_doctor = self.execute_select(PersistencyDML.select_all_doctor + " WHERE USERID = " + str(doctor.user.id))
+        doctor.specialty = result_doctor[0][2]
+        return doctor;
+
+    def findUser(self, user):
+        result_user = self.execute_select(PersistencyDML.select_all_user + " WHERE LOGIN = '" + user.login + "'")
+        user.id = result_user[0][0]
+        user.role = result_user[0][2]

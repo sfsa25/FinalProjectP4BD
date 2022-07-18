@@ -5,7 +5,7 @@ from EntryValidation import EntryValidation
 class User:
 
     def __init__(self, login, role, passwdo):
-
+        self.id = None
         self.login = login
         self.role = role
         self.passwd = passwdo
