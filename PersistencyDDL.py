@@ -13,11 +13,9 @@ create_specialty = """CREATE TABLE IF NOT EXISTS SPECIALTY(
 
 create_doctor = """CREATE TABLE IF NOT EXISTS DOCTOR(
                            ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                           LOGIN TEXT not null,
-                           USERTYPE INTEGER NOT NULL,
                            USERID INTEGER NOT NULL,
-                           CRYPTOGRAPHIC_PASSWD TEXT not null,
-                     FOREIGN KEY(USERTYPE) REFERENCES SPECIALTY(ID),
+                           DOCTOR_TYPE INTEGER NOT NULL,
+                     FOREIGN KEY(DOCTOR_TYPE) REFERENCES SPECIALTY(ID),
                      FOREIGN KEY(USERID) REFERENCES USER(ID))"""
 
 create_patient = """CREATE TABLE IF NOT EXISTS PATIENT(

@@ -31,6 +31,17 @@ class Persistency:
             logging.error(e)
             raise e
 
+    def execute_transaction(self, statement):
+        try:
+            c = self.pre_statement()
+            c.execute(PersistencyDML.begin_transaction)
+            for st in statement:
+                c.execute(st)
+            self.post_statement()
+        except Exception as e:
+            logging.error(e)
+            raise e
+
     def execute_select(self, statement):
         try:
             c = self.pre_statement()
@@ -64,10 +75,15 @@ class Persistency:
         except Exception as e:
             raise e
 
-
     def setup_data(self):
         try:
             for i in PersistencyDML.list_initial_data:
                 self.execute_command(i)
         except Exception as e:
             raise e
+
+    def insert_doctor_trans(self, doctor):
+        statements = [
+            PersistencyDML.insert_user + "'" + doctor.user.login + "','" + doctor.user.passwd + "', '" + doctor.user.role + "')",
+            PersistencyDML.insert_doctor + "(SELECT MAX(ID)+1 FROM USER), " + doctor.specialty + ")"]
+        self.execute_transaction(statements)

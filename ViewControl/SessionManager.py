@@ -15,5 +15,5 @@ class SessionManager:
         if not query_result:
             return False
 
-        self.logged_user = User(query_result[0][1], query_result[0][2])
+        self.logged_user = User(query_result[0][1], query_result[0][2], None)
         return True
