@@ -3,7 +3,7 @@ import logging
 from Doctor import Doctor
 from User import User
 from Doctor import Doctor
-from ViewControl.Menu import  Menu
+from ViewControl.Menu import Menu
 from ViewControl.SessionManager import SessionManager
 from Persistency import Persistency
 
@@ -11,18 +11,21 @@ from Persistency import Persistency
 per = Persistency()
 session = SessionManager(per)
 
-# Drop all tables
-per.setup_tables(0)
 
-# Create all tables
-per.setup_tables(1)
-per.setup_data()
+def setup():
+    # Drop all tables
+    per.setup_tables(0)
 
-try:
+    # Create all tables
+    per.setup_tables(1)
+    per.setup_data()
 
-    auth_info = Menu.menu_auth();
-    if session.auth_user(auth_info[0], auth_info[1]):
-        opt = Menu.authorize(session.logged_user)
+
+def menu_admin(logged_user):
+
+    while True:
+        opt = Menu.authorize(logged_user)
+
         if opt == '1':
             # NO INPUTS HERE, PLEASE... HEAD TO MENU
             print('start flow book an appointment')
@@ -30,7 +33,7 @@ try:
         elif opt == '2.1':
             doc_login = Menu.get_doctor()
             new_user = User(doc_login, None, None)
-            find_doc = Doctor(new_user, None, None, None, None )
+            find_doc = Doctor(new_user, None, None, None, None)
             new_doctor = find_doc.findDoctor(per)
             logging.info('Doctor found! Collecting the actions from the client!')
             doc_opt = Menu.doctor_option(new_doctor)
@@ -49,12 +52,31 @@ try:
             pass
         elif opt == '4':
             pass
+        elif opt == '5':
+            break
         else:
             raise IndexError("Invalid option selected")
 
-except Exception as e:
-    logging.error("Login Error: USER OR PASSWORD NOT FOUND! Try again...")
-    exit(0)
-except IndexError as e:
-    logging.error("Data input format is invalid")
-    exit(0)
+def menu_doctor(logged_user):
+    print()
+
+def login():
+
+    setup()
+    try:
+        auth_info = Menu.menu_auth();
+        if session.auth_user(auth_info[0], auth_info[1]):
+            if session.logged_user.role == "ADMIN":
+                menu_admin(session.logged_user)
+            elif session.logged_user.role == "DOCTOR":
+                menu_doctor(session.logged_user)
+    except Exception as e:
+        logging.error("Login Error: USER OR PASSWORD NOT FOUND! Try again...")
+        exit(0)
+    except IndexError as e:
+        logging.error("Data input format is invalid")
+        exit(0)
+
+
+if __name__ == '__main__':
+    login()
