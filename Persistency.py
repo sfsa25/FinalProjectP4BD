@@ -117,8 +117,13 @@ class Persistency:
 
     def findDoctorTimeTable(self, doctor_id):
         query = PersistencyDML.select_all_timetable + " WHERE DOCTOR_ID = " + doctor_id
-        result_doctor = self.execute_select(query);
+        result_doctor = self.execute_select(query)
 
     def findDateSlots(self, dat):
-        query = PersistencyDML.select_all_timetable + " WHERE DATE_STAMP = " + dat
-        return self.execute_select(query);
+        query = PersistencyDML.select_all_timetable + """ WHERE strftime("%d-%m-%Y", DATE_STAMP) = '""" + str(dat) +"'"
+        return self.execute_select(query)
+
+    def updateSlot(self, dat, slot):
+
+        query = PersistencyDML.updateTimeSlot + "\"" + str(slot) + """\" WHERE strftime("%d-%m-%Y", DATE_STAMP) = '""" + str(dat) +"'"
+        return self.execute_command(query)

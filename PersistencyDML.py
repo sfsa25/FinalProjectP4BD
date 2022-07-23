@@ -18,5 +18,5 @@ insert_user = """INSERT INTO USER (LOGIN,CRYPTOGRAPHIC_PASSWD, USERTYPE) VALUES 
 insert_doctor = """INSERT INTO DOCTOR (USERID, DOCTOR_TYPE, WORKING_DAYS, SHIFTS) VALUES ("""
 
 list_initial_data = [initial_users, initial_specialties, initial_doctor]
-
+updateTimeSlot  = "UPDATE TIMETABLE SET TIMESLOT = "
 begin_transaction = "BEGIN TRANSACTION"

@@ -4,6 +4,7 @@ import StaticPatterns
 from EntryValidation import EntryValidation
 from Persistency import Persistency
 from TimeTable import TimeTable
+import re
 
 
 class Doctor:
@@ -38,10 +39,19 @@ class Doctor:
     def findDoctor(self, per:Persistency):
         if self.validateUser():
             result_find_doctor = per.findDoctor(self)
-
-        return self;
+        return self
 
     def getFreeSlots(self, dat, per):
         if dat is None:
             dat = datetime.now()
-        per.findDateSlots(dat)
+        result = per.findDateSlots(dat)
+        return re.findall(StaticPatterns.slots, result[0][3])
+
+    def removeSlot(self, dat, slot, per):
+        result = self.getFreeSlots(dat, per)
+        for slotx in result:
+            if slotx == slot:
+                result.remove(slotx)
+                break
+
+        result = per.updateSlot(dat, result)

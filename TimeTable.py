@@ -52,7 +52,7 @@ class TimeTable:
             if term=='2':
                 slots.append(TimeTable.getSlots(12,13))
             if term=='3':
-                slots.append(TimeTable.getSlots(13,14))
+                slots.append(TimeTable.getSlots(18,19))
 
         return slots
 
@@ -62,7 +62,7 @@ class TimeTable:
         terms.append(str(fro) + ":" + str(to))
         terms.append(str(fro + 1) + ":" + str(to + 1))
         terms.append(str(fro + 2) + ":" + str(to + 2))
-        terms.append(str(fro + 2) + ":" + str(to + 2))
+        terms.append(str(fro + 3) + ":" + str(to + 4))
         return terms;
 
     @classmethod
