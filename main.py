@@ -12,11 +12,11 @@ per = Persistency()
 session = SessionManager(per)
 
 # Drop all tables
-#per.setup_tables(0)
+per.setup_tables(0)
 
 # Create all tables
-#per.setup_tables(1)
-#per.setup_data()
+per.setup_tables(1)
+per.setup_data()
 
 try:
 

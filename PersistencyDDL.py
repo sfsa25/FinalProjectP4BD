@@ -4,7 +4,6 @@ create_user = """CREATE TABLE IF NOT EXISTS USER(
                     ID INTEGER PRIMARY KEY AUTOINCREMENT,
                     LOGIN TEXT UNIQUE NOT NULL ,
                     USERTYPE TEXT NOT NULL,
-                    USERTYPE TEXT NOT NULL,
                CRYPTOGRAPHIC_PASSWD TEXT NOT NULL
                )"""
 

@@ -62,7 +62,7 @@ class TimeTable:
         terms.append(str(fro) + ":" + str(to))
         terms.append(str(fro + 1) + ":" + str(to + 1))
         terms.append(str(fro + 2) + ":" + str(to + 2))
-        terms.append(str(fro + 3) + ":" + str(to + 4))
+        terms.append(str(fro + 3) + ":" + str(to + 3))
         return terms;
 
     @classmethod

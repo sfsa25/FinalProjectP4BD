@@ -89,7 +89,7 @@ class Persistency:
     def insert_doctor_trans(self, doctor):
         statements = [
             PersistencyDML.insert_user + "'" + doctor.user.login + "','" + doctor.user.passwd + "', '" + doctor.user.role +"')",
-            PersistencyDML.insert_doctor + "(SELECT MAX(ID) FROM USER), " + doctor.specialty + ",\"" + str(doctor.workingdays) + "\""+doctor.shifts+"\")"]
+            PersistencyDML.insert_doctor + "(SELECT MAX(ID) FROM USER), " + doctor.specialty + ",\"" + str(doctor.workingdays) + "\", \""+doctor.shifts+"\" )"]
         return self.execute_transaction(statements)
 
     def findDoctor(self, doctor):
