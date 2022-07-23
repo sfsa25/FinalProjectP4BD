@@ -41,13 +41,14 @@ create_appointment = """CREATE TABLE IF NOT EXISTS APPOINTMENT(
                            """
 
 create_prescription = """CREATE TABLE IF NOT EXISTS PRESCRIPTION(
-                           ID INTEGER PRIMARY KEY AUTOINCREMENT,
-                           APPOINTMENT_ID INTEGER NOT NULL,
-                           DATE_CREATED DATETIME NOT NULL,
-                           MEDICATION TEXT
-                           DOSE TEXT,
-                           OBSERVATION TEXT,
-                           FOREIGN KEY(APPOINTMENT_ID) REFERENCES APPOINTMENT(ID))
+                          ID            integer PRIMARY KEY AUTOINCREMENT,
+                          DATE_CREATED  datetime NOT NULL DEFAULT CURRENT_DATE,
+                          MEDICATION    varchar(50) NOT NULL,
+                          OBSERVATION   text,
+                          PATIENT_ID    integer NOT NULL,
+                          DOCTOR_ID     integer NOT NULL,
+                          CONSTRAINT FK_DOCTOR FOREIGN KEY (DOCTOR_ID) REFERENCES DOCTOR(ID), 
+                          CONSTRAINT FK_PATIENT FOREIGN KEY (PATIENT_ID) REFERENCES PATIENT(ID))
                            """
 
 create_timetable = """CREATE TABLE IF NOT EXISTS TIMETABLE (
