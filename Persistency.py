@@ -63,6 +63,13 @@ class Persistency:
             logging.error(e)
             raise e
 
+    def insert_statement_byDict(dict, table_name):
+        new_dict = {k: v for k, v in dict.items() if v is not None}
+        columns = ', '.join(new_dict.keys())
+        values = ', '.join(new_dict.values())
+        statement = f"INSERT INTO {table_name} ({columns}) VALUES ({values})" + "\n"
+        return statement
+
     # create = 1
     # drop   = 0
     def setup_tables(self, create_or_drop):
