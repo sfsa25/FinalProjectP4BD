@@ -1,5 +1,4 @@
 import logging
-from typing import re
 
 import StaticPatterns
 from Doctor import Doctor
@@ -51,13 +50,15 @@ class Menu:
     @staticmethod
     def get_new_doctor():
         print("--->REGISTER A NEW DOCTOR<---")
-        user_login = input("PLEASE, TYPE YOUR LOGIN: ")
-        user_passwd = input("PLEASE, TYPE YOUR PASSWORD:")
-        doc_specialty = input("PLEASE, CHOOSE A SPECIALTY ( 1 - Cardiologist, 2 - Physician, 3 - Family Care):")
-        user = User(user_login, 'DOCTOR', user_passwd)
-        doc = Doctor(user, doc_specialty)
+        userLogin = input("PLEASE, TYPE YOUR LOGIN: ")
+        userPasswd = input("PLEASE, TYPE YOUR PASSWORD:")
+        docSpecialty = input("PLEASE, CHOOSE A SPECIALTY ( 1 - Cardiologist, 2 - Physician, 3 - Family Care):")
+        docWorkingDays = input("""PLEASE, TYPE WORKING DAYS(Pattern: ['Monday','Tuesday', 'Wednesday']): """)
+        docshifts = input("""PLEASE, TYPE SHIFT(Pattern : ['1', '2', '3'], 1 - Morning, 2 - Afternoon, 3 - Evening): """)
+        user = User(userLogin, 'DOCTOR', userPasswd)
+        doc = Doctor(user, docSpecialty, docWorkingDays, docshifts, None)
         logging.info("New Doctor instance created: doc.user.login: "+doc.user.login);
-        return doc;
+        return doc
 
     @staticmethod
     def get_doctor():
@@ -65,8 +66,8 @@ class Menu:
         return input("PLEASE, TYPE THE DOCTOR'S LOGIN: ")
 
     @staticmethod
-    def doctor_option(doc_login):
-        print('Doctor '+ doc_login + ' found!')
+    def doctor_option(doc:Doctor):
+        print('Doctor ' + doc.user.login + ' found! This is (are) his working day(s):' + doc.workingdays)
         print('What would you like to do?:')
-        return input('0 - Exit, 1 - Create a schedule, 2 - Find an appointment')
+        return input('0 - Exit, 2 - Create an appointment for this doctor')
 

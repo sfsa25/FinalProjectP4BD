@@ -30,15 +30,17 @@ try:
         elif opt == '2.1':
             doc_login = Menu.get_doctor()
             new_user = User(doc_login, None, None)
-            find_doc = Doctor(new_user, None)
+            find_doc = Doctor(new_user, None, None, None, None )
             new_doctor = find_doc.findDoctor(per)
-            doc_opt = Menu.doctor_option(doc_login)
-            pass;
+            logging.info('Doctor found! Collecting the actions from the client!')
+            doc_opt = Menu.doctor_option(new_doctor)
         elif opt == '2.2':
             # NO INPUTS HERE, PLEASE... HEAD TO MENU
             new_doctor = Menu.get_new_doctor()
             new_doctor.save_new_doctor(per)
-            print('The new doctor ' + new_doctor.user.login + ' Successfully created!')
+            new_doctor.generateAndSaveCalendar(per)
+            logging.info('\n ---The new doctor ' + new_doctor.user.login + ' Successfully created! ---')
+            print('\n --- The new doctor ' + new_doctor.user.login + ' Successfully created! ---')
         elif opt == '2.3':
             pass
         elif opt == '3.1':

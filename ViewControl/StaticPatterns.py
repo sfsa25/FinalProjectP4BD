@@ -7,3 +7,6 @@ PASSWD_PATTERN = '[0-9]{4,4}?';
 
 # 4 digits #
 SPECIALTY_PATTERN = '[1-3]{1}?';
+
+#
+#TO BE DONE WORKINGDAYS =

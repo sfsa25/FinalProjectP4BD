@@ -4,39 +4,22 @@ from pandas.io.common import file_exists
 
 import PersistencyDDL
 import PersistencyDML
+from Doctor import Doctor
 from Persistency import Persistency
+from User import User
 
 
 class PersistencyTestCases(unittest.TestCase):
-    @classmethod
-    def setUpClass(cls):
-        #print("setUpClass")
-        per = Persistency()
-        per.setup_tables(0)
 
-    def testPersistencyInitialization(self):
+
+
+    def testInsertDoctor(self):
+        workingdays =  ["1"]
+        user = User("login","DOCTOR","dsdsd")
+        doc = Doctor(user,'Cardiologist', ["Monday", "Sunday"], ["1"], 1)
         per = Persistency()
-        # Check if database is present
-        self.assertEqual(file_exists(PersistencyDDL.db_path), True, "Database does not exist")
-        per.setup_tables(1)
-        # Check if table were created
-        self.assertIsNotNone(per.execute_select_pandas(PersistencyDML.select_all_user), 'User table was not properly '
-                                                                                        'created')
-        self.assertIsNotNone(per.execute_select_pandas(PersistencyDML.select_all_doctor),
-                             'Doctor table was not properly '
-                             'created')
-        self.assertIsNotNone(per.execute_select_pandas(PersistencyDML.select_all_specialty),
-                             'Specialty table was not properly '
-                             'created')
-        self.assertIsNotNone(per.execute_select_pandas(PersistencyDML.select_all_appointment),
-                             'Appointment table was not properly '
-                             'created')
-        self.assertIsNotNone(per.execute_select_pandas(PersistencyDML.select_all_patient),
-                             'Patient table was not properly '
-                             'created')
-        self.assertIsNotNone(per.execute_select_pandas(PersistencyDML.select_all_prescription),
-                             'Prescription table was not properly '
-                             'created')
+        doc.generateAndSaveCalendar(per)
+
 
 
 if __name__ == '__main__':
