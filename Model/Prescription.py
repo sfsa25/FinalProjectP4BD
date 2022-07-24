@@ -4,14 +4,7 @@ import PersistencyDML
 
 class Prescription(Persistency):
 
-    def __init__(self):
-        super().__init__()
-        self.patient_id = None
-        self.doctor_id = None
-        self.medication = None
-        self.observation = None
-
-    def __init__(self, patient_id, doctor_id, medication, observation=None):
+    def __init__(self, patient_id=None, doctor_id=None, medication=None, observation=None):
         super().__init__()
         self.patient_id = patient_id
         self.doctor_id = doctor_id
