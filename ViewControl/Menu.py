@@ -33,7 +33,7 @@ class Menu:
             print(" -- 2.2 - Register a new doctor")
             print(" -- 2.3 - Create a schedule")
             print("Patients Menu:")
-            print(" -- 3.1 - Find (or change) an appointment")
+            print(" -- 3.1 - Find an appointment")
             print(" -- 3.2 - Register a new patient")
             print("4 - Reports")
             print("5 - Exit")
@@ -41,9 +41,10 @@ class Menu:
             print("---Welcome doctor " + user.login+" ---")
             print("Doctors Menu:\n")
             print("1 - Find a patient \n")
-            print("2 - Find (or change) an appointment\n")
+            print("2 - Find an appointment\n")
             print("3 - Prescribe\n")
-            print("4 - Exit")
+            print("4 - Find prescription\n")
+            print("5 - Exit")
         elif user.role == "ANALYST":
             print("---Welcome analyst " + user.login+" ---")
 
