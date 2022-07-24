@@ -2,14 +2,15 @@ from datetime import datetime
 
 import StaticPatterns
 from EntryValidation import EntryValidation
-from Persistency import Persistency
 from TimeTable import TimeTable
 import re
+from Persistency import Persistency
 
 
-class Doctor:
+class Doctor(Persistency):
 
     def __init__(self, user, specialty, workingdays, shifts, id):
+        super().__init__()
         self.timetable = None
         self.id = id
         self.user = user
@@ -20,38 +21,38 @@ class Doctor:
     def validate(self):
         return EntryValidation.validateField(self.specialty, StaticPatterns.SPECIALTY_PATTERN)
 
-    def generateAndSaveCalendar(self, per):
+    def generateAndSaveCalendar(self):
         tt = TimeTable()
         self.timetable = tt.buildTimeTable(self.workingdays, self.shifts)
-        per.insertTimeTable(self.timetable, self.id)
+        self.insertTimeTable(self.timetable, self.id)
 
     def validateUser(self):
         valid_login = EntryValidation.validateField(self.user.login, StaticPatterns.LOGIN_PATTERN)
         # valid_workingdays = EntryValidation.validateField(self.user.login, StaticPatterns.WORKINGDAYS)
         return valid_login
 
-    def save_new_doctor(self, per:Persistency):
+    def save_new_doctor(self):
         last_id = 0
         if self.user.validate() and self.validate():
-            last_id = per.insert_doctor_trans(self)
+            last_id = self.insert_doctor_trans(self)
         self.id = last_id
 
-    def findDoctor(self, per:Persistency):
+    def findDoctor(self):
         if self.validateUser():
-            result_find_doctor = per.findDoctor(self)
+            result_find_doctor = self.findDoctor(self)
         return self
 
-    def getFreeSlots(self, dat, per):
+    def getFreeSlots(self, dat):
         if dat is None:
             dat = datetime.now()
-        result = per.findDateSlots(dat)
+        result = self.findDateSlots(dat)
         return re.findall(StaticPatterns.slots, result[0][3])
 
-    def removeSlot(self, dat, slot, per):
-        result = self.getFreeSlots(dat, per)
+    def removeSlot(self, dat, slot):
+        result = self.getFreeSlots(dat)
         for slotx in result:
             if slotx == slot:
                 result.remove(slotx)
                 break
 
-        result = per.updateSlot(dat, result)
+        result = self.updateSlot(dat, result)
