@@ -99,12 +99,14 @@ class Persistency:
             PersistencyDML.insert_doctor + "(SELECT MAX(ID) FROM USER), " + doctor.specialty + ",\"" + str(doctor.workingdays) + "\", \""+doctor.shifts+"\" )"]
         return self.execute_transaction(statements)
 
+
     def findDoctor(self, doctor):
         self.findUser(doctor.user)
         result_doctor = self.execute_select(PersistencyDML.select_all_doctor + " WHERE USERID = " + str(doctor.user.id))
+        #if it doesn't exist it will give an error
         doctor.specialty = result_doctor[0][2]
         doctor.workingdays = result_doctor[0][3]
-        return doctor;
+        return doctor
 
     def findUser(self, user):
         result_user = self.execute_select(PersistencyDML.select_all_user + " WHERE LOGIN = '" + user.login + "'")
