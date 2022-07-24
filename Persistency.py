@@ -95,24 +95,35 @@ class Persistency:
 
     def insert_doctor_trans(self, doctor):
         statements = [
-            PersistencyDML.insert_user + "'" + doctor.user.login + "','" + doctor.user.passwd + "', '" + doctor.user.role +"')",
+            PersistencyDML.insert_user + "'" + doctor.user.name + "', '" + doctor.user.login + "','" + doctor.user.passwd + "', '" + doctor.user.role + "')",
             PersistencyDML.insert_doctor + "(SELECT MAX(ID) FROM USER), " + doctor.specialty + ",\"" + str(doctor.workingdays) + "\", \""+doctor.shifts+"\" )"]
+
         return self.execute_transaction(statements)
 
 
-    def findDoctor(self, doctor):
-        self.findUser(doctor.user)
-        result_doctor = self.execute_select(PersistencyDML.select_all_doctor + " WHERE USERID = " + str(doctor.user.id))
-        #if it doesn't exist it will give an error
-        doctor.specialty = result_doctor[0][2]
-        doctor.workingdays = result_doctor[0][3]
+
+    def researchDoctor(self, doctor):
+        try:
+            self.findUserByName(doctor.user)
+            result_doctor = self.execute_select(PersistencyDML.select_all_doctor + " WHERE USERID = " + str(doctor.user.id))
+            doctor.specialty = result_doctor[0][2]
+            doctor.workingdays = result_doctor[0][3]
+        except LookupError as e:
+            raise e
+
         return doctor
 
-    def findUser(self, user):
-        result_user = self.execute_select(PersistencyDML.select_all_user + " WHERE LOGIN = '" + user.login + "'")
-        user.id = result_user[0][0]
-        user.login = result_user[0][1]
-        user.role = result_user[0][2]
+
+    def findUserByName(self, user):
+        result_user = self.execute_select(PersistencyDML.select_all_user + " WHERE NAME = '" + user.name + "'")
+        if result_user and len(result_user):
+            user.id = result_user[0][0]
+            user.login = result_user[0][1]
+            user.role = result_user[0][2]
+        else:
+            raise LookupError("USER NOT FOUND!")
+
+        return user
 
     def insertTimeTable(self, timetable, doc_id):
         listofqueries = []

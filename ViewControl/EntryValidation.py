@@ -8,5 +8,3 @@ class EntryValidation:
         validity = bool(re.fullmatch(regex_expression, field_value.strip()));
 
         return validity
-
-

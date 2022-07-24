@@ -38,8 +38,10 @@ class Doctor(Persistency):
         self.id = last_id
 
     def findDoctor(self):
-        if self.validateUser():
-            result_find_doctor = self.findDoctor(self)
+        if self.user.name:
+            result_find_doctor = self.researchDoctor(self)
+        else:
+            raise IndexError('Invalid name')
         return self
 
     def getFreeSlots(self, dat):

@@ -26,7 +26,7 @@ class Menu:
     @staticmethod
     def authorize(user):
         if user.role == "ADMIN":
-            print("---Welcome admin " + user.login+" ---")
+            print("---Welcome admin " + user.name+", login: "+user.login)
             print("1 - Book an appointment")
             print("Doctors Menu:")
             print(" -- 2.1 - Find a doctor ")
@@ -38,7 +38,7 @@ class Menu:
             print("4 - Reports")
             print("5 - Exit")
         elif user.role == "DOCTOR":
-            print("---Welcome doctor " + user.login+" ---")
+            print("---Welcome doctor " + user.name+", login: "+user.login)
             print("Doctors Menu:\n")
             print("1 - Find a patient \n")
             print("2 - Find an appointment\n")
@@ -53,12 +53,13 @@ class Menu:
     @staticmethod
     def get_new_doctor():
         print("--->REGISTER A NEW DOCTOR<---")
-        userLogin = input("PLEASE, TYPE YOUR LOGIN: ")
-        userPasswd = input("PLEASE, TYPE YOUR PASSWORD:")
+        userName =  input("PLEASE, TYPE THE DOCTO'S NAME: ")
+        userLogin = input("PLEASE, TYPE THE DOCTOR'S LOGIN: ")
+        userPasswd = input("PLEASE, TYPE THE DOCTOR'S PASSWORD:")
         docSpecialty = input("PLEASE, CHOOSE A SPECIALTY ( 1 - Cardiologist, 2 - Physician, 3 - Family Care):")
         docWorkingDays = input("""PLEASE, TYPE WORKING DAYS(Pattern: ['Monday','Tuesday', 'Wednesday']): """)
         docshifts = input("""PLEASE, TYPE SHIFT(Pattern : ['1', '2', '3'], 1 - Morning, 2 - Afternoon, 3 - Evening): """)
-        user = User(userLogin, 'DOCTOR', userPasswd)
+        user = User(userName, userLogin, 'DOCTOR', userPasswd)
         doc = Doctor(user, docSpecialty, docWorkingDays, docshifts, None)
         logging.info("New Doctor instance created: doc.user.login: "+doc.user.login);
         return doc
@@ -66,7 +67,7 @@ class Menu:
     @staticmethod
     def get_doctor():
         print("--->REGISTER A NEW DOCTOR<---")
-        return input("PLEASE, TYPE THE DOCTOR'S LOGIN: ")
+        return input("PLEASE, TYPE THE DOCTOR'S NAME: ")
 
     @staticmethod
     def doctor_option(doc:Doctor):

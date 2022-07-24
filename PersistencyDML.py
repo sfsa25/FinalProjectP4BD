@@ -9,12 +9,12 @@ select_all_patient = """SELECT * FROM PATIENT"""
 select_all_timetable = """SELECT * FROM TIMETABLE"""
 
 
-initial_users = """INSERT INTO USER (LOGIN,USERTYPE,CRYPTOGRAPHIC_PASSWD) VALUES ('SUPERADMIN', 'ADMIN', '1234')"""
+initial_users = """INSERT INTO USER (NAME, LOGIN,USERTYPE,CRYPTOGRAPHIC_PASSWD) VALUES ('ADMIN_NAME','SUPERADMIN', 'ADMIN', '1234')"""
 initial_specialties = """INSERT INTO SPECIALTY (SPECIALTY) values ('Cardiologist'), ('Physician'), ('Family Care')"""
 initial_doctor = """INSERT INTO DOCTOR (USERID, DOCTOR_TYPE, WORKING_DAYS, SHIFTS) VALUES ('1', '1', "['Monday', 'Friday']", "['1', '2']")"""
 
 insert_calendar = """INSERT INTO TIMETABLE (DOCTOR_ID, DATE_STAMP, TIMESLOT) VALUES ("""
-insert_user = """INSERT INTO USER (LOGIN,CRYPTOGRAPHIC_PASSWD, USERTYPE) VALUES ("""
+insert_user = """INSERT INTO USER (NAME, LOGIN,CRYPTOGRAPHIC_PASSWD, USERTYPE) VALUES ("""
 insert_doctor = """INSERT INTO DOCTOR (USERID, DOCTOR_TYPE, WORKING_DAYS, SHIFTS) VALUES ("""
 
 list_initial_data = [initial_users, initial_specialties, initial_doctor]
