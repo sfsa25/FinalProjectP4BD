@@ -12,8 +12,12 @@ class Prescription(Persistency):
         self.observation = observation
 
     def insertPrescription(self):
-        statement = self.insert_statement_byDict(self.__dict__, 'Prescription')
-        self.execute_command(statement)
+
+        self.insertPrescribe(self.patient_id, self.doctor_id, self.medication, self.observation)
+
+    def findPrescription(self):
+
+        return self.findPrescriptionbyDoctor(self.doctor_id, self.patient_id)
 
 
 

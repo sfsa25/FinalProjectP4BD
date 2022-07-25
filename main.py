@@ -2,7 +2,7 @@ import logging
 
 from User import User
 from Doctor import Doctor
-from Prescription import Prescription
+
 from ViewControl.Menu import Menu
 from ViewControl.SessionManager import SessionManager
 from Persistency import Persistency
@@ -33,12 +33,12 @@ def menu_admin(logged_user):
                 doc_name = Menu.get_doctor()
                 new_user = User(doc_name, None, None, None)
                 find_doc = Doctor(new_user, None, None, None, None)
-                new_doctor = find_doc.findDoctor() #if this user not exists?
+                new_doctor = find_doc.findDoctor()
                 logging.info('Doctor found! Collecting the actions from the client!')
                 doc_opt = Menu.doctor_option(new_doctor)
             elif opt == '2.2':
                 # NO INPUTS HERE, PLEASE... HEAD TO MENU
-                new_doctor = Menu.get_new_doctor() #if this user already exists?
+                new_doctor = Menu.get_new_doctor()
                 new_doctor.save_new_doctor()
                 new_doctor.generateAndSaveCalendar()
                 logging.info('\n ---The new doctor ' + new_doctor.user.name + ' Successfully created! ---\n')
@@ -49,6 +49,10 @@ def menu_admin(logged_user):
                 pass
             elif opt == '3.2':
                 pass
+            elif opt == '3.3':
+                pass
+            elif opt == '3.4':
+                Menu.find_prescriptions()
             elif opt == '4':
                 pass
             elif opt == '5':
@@ -76,12 +80,9 @@ def menu_doctor(logged_user):
             # findpatient
 
         elif opt == '3':
-            print('prescribe')
-            # findpatient
-            #askformedication
-            #observation
+            Menu.prescription(logged_user.login)
         elif opt == '4':
-            print('Find prescription')
+            Menu.find_prescriptionsbyDoctor(logged_user.login)
         elif opt == '5':
             break
         else:
@@ -89,7 +90,7 @@ def menu_doctor(logged_user):
 
 
 def login():
-    #setup()
+    # setup()
     try:
         auth_info = Menu.menu_auth()
         if session.auth_user(auth_info[0], auth_info[1]):

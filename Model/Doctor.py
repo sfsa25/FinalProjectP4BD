@@ -9,7 +9,7 @@ from Persistency import Persistency
 
 class Doctor(Persistency):
 
-    def __init__(self, user, specialty, workingdays, shifts, id):
+    def __init__(self, user=None, specialty=None, workingdays=None, shifts=None, id=None):
         super().__init__()
         self.timetable = None
         self.id = id
@@ -43,6 +43,12 @@ class Doctor(Persistency):
         else:
             raise IndexError('Invalid name')
         return self
+
+    def findDoctorID(self, login):
+        return self.findDoctorByID(login)
+
+    def getallDoctors(self):
+        return self.allDoctors()
 
     def getFreeSlots(self, dat):
         if dat is None:

@@ -3,6 +3,8 @@ import logging
 import StaticPatterns
 from Doctor import Doctor
 from User import User
+from Prescription import Prescription
+from Patient import Patient
 from ViewControl.EntryValidation import EntryValidation
 import Menu
 
@@ -11,7 +13,7 @@ class Menu:
 
     @staticmethod
     def menu_auth():
-        login = input("Enter your login: \n")
+        login = input("Enter your login: \n").upper()
         if EntryValidation.validateField(login, StaticPatterns.LOGIN_PATTERN):
             passwd = input("Enter your password: ")
             if not EntryValidation.validateField(passwd, StaticPatterns.PASSWD_PATTERN):
@@ -34,17 +36,19 @@ class Menu:
             print(" -- 2.3 - Create a schedule")
             print("Patients Menu:")
             print(" -- 3.1 - Find an appointment")
-            print(" -- 3.2 - Register a new patient")
+            print(" -- 3.2 - Find a patient")
+            print(" -- 3.3 - Register a new patient")
+            print(" -- 3.4 - Find a prescription")
             print("4 - Reports")
             print("5 - Exit")
         elif user.role == "DOCTOR":
             print("---Welcome doctor " + user.name+", login: "+user.login)
-            print("Doctors Menu:\n")
-            print("1 - Find a patient \n")
-            print("2 - Find an appointment\n")
-            print("3 - Prescribe\n")
-            print("4 - Find prescription\n")
-            print("5 - Exit")
+            print("Doctors Menu:")
+            print("1 - Find a patient ")
+            print("2 - Find an appointment")
+            print("3 - Prescribe")
+            print("4 - Find a prescription ")
+            print("5 - Exit\n")
         elif user.role == "ANALYST":
             print("---Welcome analyst " + user.login+" ---")
 
@@ -74,4 +78,68 @@ class Menu:
         print('Doctor ' + doc.user.login + ' found! This is (are) his working day(s):' + doc.workingdays)
         print('What would you like to do?:')
         return input('0 - Exit, 2 - Create an appointment for this doctor')
+
+    @staticmethod
+    def prescription(login):
+        name = input("Patient Name: ")
+        patient = Patient().findPatient(name)
+        if not patient.empty:
+            while True:
+                medication = input("Medication: ")
+                observation = input("Observations: ")
+                doctor = Doctor().findDoctorID(login)
+                prescribe = Prescription(patient['ID'][0], doctor['ID'][0], medication, observation)
+                prescribe.insertPrescription()
+                opt= input('Do you want to add another medication? Y-YES X-EXIT \n')
+                if not opt == 'Y':
+                    break
+        else:
+            print('Patient not found.')
+
+    @staticmethod
+    def find_prescriptionsbyDoctor(login):
+        name = input("Patient Name: ")
+        patient = Patient().findPatient(name)
+        if not patient.empty:
+            doctor = Doctor().findDoctorID(login)
+            prescribe = Prescription(patient['ID'][0], doctor['ID'][0])
+            doctor_name = doctor['NAME'][0]
+            list_medication = prescribe.findPrescription()
+            if len(list_medication) > 0:
+                print(f'--- Patient: {name}')
+                print(f'--- Prescriptions made by {doctor_name}  --- \n')
+                for med, obs, date in list_medication:
+                    print(f'Date Created: {date} - Medication: {med} - Observation {obs}')
+                print()
+            else:
+                print('There are no prescriptions for this patient.')
+        else:
+            print('Patient not found.')
+
+    @staticmethod
+    def find_prescriptions():
+        name = input("Patient Name: ")
+        patient = Patient().findPatient(name)
+        if not patient.empty:
+            doctors = Doctor().getallDoctors()
+            if len(doctors) > 0:
+                for id, doctor_name in doctors:
+                    prescribe = Prescription(patient['ID'][0], id)
+                    list_medication = prescribe.findPrescription()
+                    if len(list_medication) > 0:
+                        print(f'--- Patient: {name}')
+                        print(f'--- Prescriptions made by {doctor_name}  --- \n')
+                        for med, obs, date in list_medication:
+                            print(f'Date Created: {date} - Medication: {med} - Observation {obs}')
+                        print()
+                    else:
+                        print('There are no prescriptions for this patient.')
+            else:
+                print('There are no registered doctors.')
+        else:
+            print('Patient not found.')
+
+
+
+
 

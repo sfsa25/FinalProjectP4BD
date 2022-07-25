@@ -9,6 +9,9 @@ select_all_patient = """SELECT * FROM PATIENT"""
 select_all_timetable = """SELECT * FROM TIMETABLE"""
 
 
+select_doctor_id = "SELECT D.ID, U.NAME FROM DOCTOR D INNER JOIN USER U ON D.USERID = U.ID "
+
+
 initial_users = """INSERT INTO USER (NAME, LOGIN,USERTYPE,CRYPTOGRAPHIC_PASSWD) VALUES ('ADMIN_NAME','SUPERADMIN', 'ADMIN', '1234')"""
 initial_specialties = """INSERT INTO SPECIALTY (SPECIALTY) values ('Cardiologist'), ('Physician'), ('Family Care')"""
 initial_doctor = """INSERT INTO DOCTOR (USERID, DOCTOR_TYPE, WORKING_DAYS, SHIFTS) VALUES ('1', '1', "['Monday', 'Friday']", "['1', '2']")"""
