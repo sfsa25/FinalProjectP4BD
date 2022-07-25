@@ -60,11 +60,11 @@ def menu_admin(logged_user):
             #else:
                 #raise IndexError(DOCTOR No)
         except LookupError as e:
-            print("Doctor Not Found! Please try again.")
-            raise e
+            print("Doctor Not Found! Please try again.\n\n")
+            #raise e
         except IndexError as ie:
-            print("Information has Invalid format")
-            raise ie
+            print("Information has Invalid format\n\n")
+            #raise ie
 
 
 def menu_doctor(logged_user):
@@ -90,7 +90,7 @@ def menu_doctor(logged_user):
 
 
 def login():
-    setup()
+    #setup()
     try:
         auth_info = Menu.menu_auth()
         if session.auth_user(auth_info[0], auth_info[1]):
