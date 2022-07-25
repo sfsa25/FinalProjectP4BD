@@ -2,7 +2,7 @@ import logging
 
 from User import User
 from Doctor import Doctor
-from Prescription import Prescription
+
 from ViewControl.Menu import Menu
 from ViewControl.SessionManager import SessionManager
 from Persistency import Persistency
@@ -33,7 +33,7 @@ def menu_admin(logged_user):
                 doc_name = Menu.get_doctor()
                 new_user = User(doc_name, None, None, None)
                 find_doc = Doctor(new_user, None, None, None, None)
-                new_doctor = find_doc.findDoctor() #if this user not exists?
+                new_doctor = find_doc.findDoctor()
                 logging.info('Doctor found! Collecting the actions from the client!')
                 doc_opt = Menu.doctor_option(new_doctor)
             elif opt == '2.2':
