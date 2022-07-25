@@ -15,6 +15,6 @@ class Patient(Persistency):
 
     # return dataframe
     def findPatient(self, name):
-        sql = f"select id, fist_name from patient where fist_name like '{name}'"
+        sql = f"select id, first_name from patient where first_name like '{name}'"
 
         return self.execute_select_pandas(sql)

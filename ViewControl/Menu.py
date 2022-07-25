@@ -13,7 +13,7 @@ class Menu:
 
     @staticmethod
     def menu_auth():
-        login = input("Enter your login: \n").upper()
+        login = input("Enter your login: \n")
         if EntryValidation.validateField(login, StaticPatterns.LOGIN_PATTERN):
             passwd = input("Enter your password: ")
             if not EntryValidation.validateField(passwd, StaticPatterns.PASSWD_PATTERN):
@@ -94,7 +94,7 @@ class Menu:
                 if not opt == 'Y':
                     break
         else:
-            print('Patient not found.')
+            print('Patient not found.\n')
 
     @staticmethod
     def find_prescriptionsbyDoctor(login):
@@ -114,7 +114,7 @@ class Menu:
             else:
                 print('There are no prescriptions for this patient.')
         else:
-            print('Patient not found.')
+            print('Patient not found.\n')
 
     @staticmethod
     def find_prescriptions():
@@ -137,7 +137,7 @@ class Menu:
             else:
                 print('There are no registered doctors.')
         else:
-            print('Patient not found.')
+            print('Patient not found.\n')
 
 
 
