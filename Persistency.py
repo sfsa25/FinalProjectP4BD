@@ -101,7 +101,8 @@ class Persistency:
             result_doctor = self.execute_select(
                 PersistencyDML.select_all_doctor + " WHERE USERID = " + str(doctor.user.id))
             doctor.specialty = result_doctor[0][2]
-            doctor.workingdays = result_doctor[0][3]
+            doctor.workingdays = result_doctor[0][4]
+            doctor.shifts = result_doctor[0][3]
         except LookupError as e:
             raise e
 
