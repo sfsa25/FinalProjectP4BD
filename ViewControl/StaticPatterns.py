@@ -11,4 +11,4 @@ SPECIALTY_PATTERN = '[1-3]{1}?';
 #
 #TO BE DONE WORKINGDAYS =
 
-slots = '\d{1}:\d{1}'
+slots = '\d{1,2}:\d{1,2}'

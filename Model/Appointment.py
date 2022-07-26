@@ -1,28 +1,26 @@
-class Appointment():
+from Persistency import Persistency
 
-    def __init__(self ):
-        self.patient_id = None
-        self.doctor_id = None
-        self.start_time = None
-        self.end_time = None
+class Appointment(Persistency):
 
-
-    def __init__(self, patient_id,  doctor_id, start_time, end_time ):
+    def __init__(self, patient_id=None,  doctor_id=None, date=None, slot=None):
+        super().__init__()
         self.patient_id = patient_id
         self.doctor_id = doctor_id
-        self.start_time = start_time
-        self.end_time = end_time
-class Appointment():
+        self.date = date
+        self.slot = slot
 
-    def __init__(self ):
-        self.patient_id = None
-        self.doctor_id = None
-        self.start_time = None
-        self.end_time = None
+    def insert(self):
+        self.insertAppointment(self.patient_id, self.doctor_id,self.date, self.slot)
+
+    def findAppointmentDoctor(self, doctor):
+        return self.findAppointmentByDoctor(doctor)
+
+    def findAppointmentPatient(self, patient):
+        return self.FindAppointmentPatient(patient)
+
+    def findFreeDate(self, doctor):
+        return self.findFreeDateByDoctor(doctor)
 
 
-    def __init__(self, patient_id,  doctor_id, start_time, end_time ):
-        self.patient_id = patient_id
-        self.doctor_id = doctor_id
-        self.start_time = start_time
-        self.end_time = end_time
+
+

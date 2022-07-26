@@ -4,7 +4,6 @@ import sqlite3
 import PersistencyDDL
 import pandas as pd
 import PersistencyDML
-import Doctor
 
 
 class Persistency:
@@ -63,7 +62,6 @@ class Persistency:
             logging.error(e)
             raise e
 
-
     # create = 1
     # drop   = 0
     def setup_tables(self, create_or_drop):
@@ -109,7 +107,6 @@ class Persistency:
         return doctor
 
     def allDoctors(self):
-
         return self.execute_select(PersistencyDML.select_doctor_id)
 
     def findDoctorByID(self, login):
@@ -125,6 +122,12 @@ class Persistency:
             raise LookupError("USER NOT FOUND!")
 
         return user
+
+    def findDoctorByName(self, name):
+        query = PersistencyDML.select_doctor_id + f" WHERE U.NAME LIKE '{name}'"
+        return self.execute_select_pandas(query)
+
+    # Time Slots
 
     def insertTimeTable(self, timetable, doc_id):
         listofqueries = []
@@ -145,12 +148,19 @@ class Persistency:
         return self.execute_select(query)
 
     def updateSlot(self, dat, slot):
-
         query = PersistencyDML.updateTimeSlot + "\"" + str(
             slot) + """\" WHERE strftime("%d-%m-%Y", DATE_STAMP) = '""" + str(dat) + "'"
         return self.execute_command(query)
 
-    def insertPrescribe(self, patient_id, doctor_id, medication,observation):
+    def findFreeDateByDoctor(self, doctor):
+        query = f"SELECT strftime('%d-%m-%Y', DATE_STAMP) DATES, TIMESLOT FROM TIMETABLE " \
+                f"WHERE DOCTOR_ID = {doctor}  AND DATE_STAMP BETWEEN DATE(CURRENT_DATE, '-1 days') " \
+                f"AND DATE(CURRENT_DATE, '+30 days')"
+        return self.execute_select(query)
+
+    # Prescription
+
+    def insertPrescribe(self, patient_id, doctor_id, medication, observation):
         query = f"INSERT INTO PRESCRIPTION (patient_id,doctor_id,medication,observation) VALUES ({patient_id},{doctor_id},'{medication}','{observation}')"
 
         return self.execute_command(query)
@@ -159,5 +169,26 @@ class Persistency:
 
         query = f"SELECT medication, observation, date_created FROM PRESCRIPTION " \
                 f"WHERE doctor_id = {doctor_id} AND patient_id = {patient_id}"
+
+        return self.execute_select(query)
+
+    # Appointment
+
+    def insertAppointment(self, patient_id, doctor_id, appointment_date, slot):
+        query = f"INSERT INTO APPOINTMENT (patient_id,doctor_id,appointment_date,slot) VALUES ({patient_id},{doctor_id},'{appointment_date}','{slot}')"
+
+        return self.execute_command(query)
+
+    def findAppointmentByDoctor(self, doctor):
+        query = f"SELECT p.first_name, p.last_name, a.appointment_date, a. slot" \
+                f"FROM APPOINTMENT a INNER JOIN PATIENT p ON  a.patient_id = p. ID" \
+                f"WHERE doctor_id = {doctor}"
+
+        return self.execute_select(query)
+
+    def findAppointmentByPatient(self, patient):
+        query = f"SELECT p.first_name, p.last_name, a.appointment_date, a. slot" \
+                f"FROM APPOINTMENT a INNER JOIN PATIENT p ON  a.patient_id = p. ID" \
+                f"WHERE patient_id = {patient}"
 
         return self.execute_select(query)

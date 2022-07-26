@@ -47,6 +47,9 @@ class Doctor(Persistency):
     def findDoctorID(self, login):
         return self.findDoctorByID(login)
 
+    def findDoctorName(self, name):
+        return self.findDoctorByName(name)
+
     def getallDoctors(self):
         return self.allDoctors()
 
@@ -64,3 +67,5 @@ class Doctor(Persistency):
                 break
 
         result = self.updateSlot(dat, result)
+
+

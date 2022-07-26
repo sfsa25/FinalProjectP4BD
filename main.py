@@ -27,8 +27,7 @@ def menu_admin(logged_user):
         try:
             if opt == '1':
                 # NO INPUTS HERE, PLEASE... HEAD TO MENU
-                print('start flow book an appointment')
-                pass
+                Menu.appointment()
             elif opt == '2.1':
                 doc_name = Menu.get_doctor()
                 new_user = User(doc_name, None, None, None)
@@ -82,7 +81,7 @@ def menu_doctor(logged_user):
         elif opt == '3':
             Menu.prescription(logged_user.login)
         elif opt == '4':
-            Menu.find_prescriptionsbyDoctor(logged_user.login)
+            Menu.find_prescriptionsByDoctor(logged_user.login)
         elif opt == '5':
             break
         else:
@@ -90,7 +89,7 @@ def menu_doctor(logged_user):
 
 
 def login():
-    #setup()
+    # setup()
     try:
         auth_info = Menu.menu_auth()
         if session.auth_user(auth_info[0], auth_info[1]):

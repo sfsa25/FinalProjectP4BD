@@ -35,8 +35,8 @@ create_appointment = """CREATE TABLE IF NOT EXISTS APPOINTMENT(
                            ID INTEGER PRIMARY KEY AUTOINCREMENT,
                            PATIENT_ID INTEGER NOT NULL,
                            DOCTOR_ID INTEGER NOT NULL, 
-                           START_TIME DATETIME NOT NULL,
-                           END_TIME DATETIME NOT NULL,
+                           APPOINTMENT_DATE DATE NOT NULL,
+                           SLOT TEXT NOT NULL,
                            FOREIGN KEY(PATIENT_ID) REFERENCES PATIENT(ID),
                            FOREIGN KEY(DOCTOR_ID) REFERENCES DOCTOR(ID))
                            """

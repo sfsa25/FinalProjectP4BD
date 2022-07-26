@@ -20,6 +20,7 @@ insert_calendar = """INSERT INTO TIMETABLE (DOCTOR_ID, DATE_STAMP, TIMESLOT) VAL
 insert_user = """INSERT INTO USER (NAME, LOGIN,CRYPTOGRAPHIC_PASSWD, USERTYPE) VALUES ("""
 insert_doctor = """INSERT INTO DOCTOR (USERID, DOCTOR_TYPE, WORKING_DAYS, SHIFTS) VALUES ("""
 
+
 list_initial_data = [initial_users, initial_specialties, initial_doctor]
 updateTimeSlot  = "UPDATE TIMETABLE SET TIMESLOT = "
 begin_transaction = "BEGIN TRANSACTION"
