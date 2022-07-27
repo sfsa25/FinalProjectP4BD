@@ -47,14 +47,17 @@ class Doctor(Persistency):
     def findDoctorLogin(self, login):
         return self.findDoctorByLogin(login)
 
-    def findDoctorId(self, id):
-        return self.findDoctorByID(id)
+    def findDoctorId(self, doctor_id):
+        return self.findDoctorByID(doctor_id)
 
     def findDoctorName(self, name):
         return self.findDoctorByName(name)
 
     def getallDoctors(self):
         return self.allDoctors()
+
+    def findFreeDate(self, doctor):
+        return self.findFreeDateByDoctor(doctor)
 
     def getFreeSlots(self, dat, doctor_id):
         if dat is None:
@@ -69,12 +72,12 @@ class Doctor(Persistency):
                 result.remove(slotx)
                 break
 
-        result = self.updateSlot(dat, result, doctor_id)
+        return result
 
     def returnSlot(self, dat, slot, doctor_id):
         result = self.getFreeSlots(dat, doctor_id)
         result.append(slot)
 
-        self.updateSlot(dat, result, doctor_id)
+        return result
 
 

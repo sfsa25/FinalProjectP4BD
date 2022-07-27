@@ -21,6 +21,15 @@ class Persistency:
         self.conn.commit()
         self.conn.close()
 
+    def execute_command_transaction(self, statement, transaction=False):
+        try:
+            c = self.conn.cursor()
+            c.execute(statement)
+
+        except Exception as e:
+            logging.error(e)
+            raise e
+
     def execute_command(self, statement):
         try:
             c = self.pre_statement()
@@ -127,8 +136,8 @@ class Persistency:
         query = PersistencyDML.select_doctor_id + f" WHERE U.NAME LIKE '{name}'"
         return self.execute_select_pandas(query)
 
-    def findDoctorByID(self, id):
-        query = PersistencyDML.select_doctor_id + f" WHERE d.ID = '{id}'"
+    def findDoctorByID(self, doctor_id):
+        query = PersistencyDML.select_doctor_id + f" WHERE d.ID = {doctor_id}"
         return self.execute_select_pandas(query)
 
     # Time Slots
@@ -181,18 +190,27 @@ class Persistency:
 
     # Appointment
 
-    def insertAppointment(self, patient_id, doctor_id, appointment_date, slot):
-        query = f"INSERT INTO APPOINTMENT (patient_id,doctor_id,appointment_date,slot) " \
-                f"VALUES ({patient_id},{doctor_id},'{appointment_date}','{slot}')"
+    def insertAppointment(self, patient_id, doctor_id, appointment_date, slot, new_slot):
+        statements = [f"INSERT INTO APPOINTMENT (patient_id,doctor_id,appointment_date,slot) "
+                      f"VALUES ({patient_id},{doctor_id},'{appointment_date}','{slot}')",
+                      PersistencyDML.updateTimeSlot + "\"" + str(
+                          new_slot) + """\" WHERE strftime("%d-%m-%Y", DATE_STAMP) = '""" + str(appointment_date) + "'"
+                      + f" AND doctor_id = {doctor_id}"]
 
-        return self.execute_command(query)
+        return self.execute_transaction(statements)
 
-    def updateAppointment(self, appointment_id, doctor_id, appointment_date, slot):
-        query = f"UPDATE APPOINTMENT SET " \
-                f"doctor_id = {doctor_id}, appointment_date = '{appointment_date}', slot = '{slot}' " \
-                f"WHERE ID = {appointment_id}"
+    def updateAppointment(self, appointment_id, doctor_id, appointment_date, slot, removed_slot, prior_date, returned_slot):
+        statements = [f"UPDATE APPOINTMENT SET doctor_id = {doctor_id}, " +
+                      f"appointment_date = '{appointment_date}', slot = '{slot}' WHERE ID = {appointment_id}",
+                      PersistencyDML.updateTimeSlot + "\"" + str(
+                          returned_slot) + """\" WHERE strftime("%d-%m-%Y", DATE_STAMP) = '""" + str(prior_date) + "'"
+                      + f" AND doctor_id = {doctor_id}",
+                      PersistencyDML.updateTimeSlot + "\"" + str(
+                          removed_slot) + """\" WHERE strftime("%d-%m-%Y", DATE_STAMP) = '""" + str(appointment_date) + "'"
+                      + f" AND doctor_id = {doctor_id}"
+                      ]
 
-        return self.execute_command(query)
+        return self.execute_transaction(statements)
 
     def findAppointmentByDoctor(self, doctor):
         query = f"SELECT p.first_name, p.last_name, a.appointment_date, a. slot, a.doctor_id " \
