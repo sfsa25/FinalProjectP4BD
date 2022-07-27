@@ -109,7 +109,7 @@ class Persistency:
     def allDoctors(self):
         return self.execute_select(PersistencyDML.select_doctor_id)
 
-    def findDoctorByID(self, login):
+    def findDoctorByLogin(self, login):
         return self.execute_select_pandas(PersistencyDML.select_doctor_id + f"  WHERE U.LOGIN LIKE '{login}'")
 
     def findUserByName(self, user):
@@ -125,6 +125,10 @@ class Persistency:
 
     def findDoctorByName(self, name):
         query = PersistencyDML.select_doctor_id + f" WHERE U.NAME LIKE '{name}'"
+        return self.execute_select_pandas(query)
+
+    def findDoctorByID(self, id):
+        query = PersistencyDML.select_doctor_id + f" WHERE d.ID = '{id}'"
         return self.execute_select_pandas(query)
 
     # Time Slots
@@ -143,19 +147,22 @@ class Persistency:
         query = PersistencyDML.select_all_timetable + " WHERE DOCTOR_ID = " + doctor_id
         result_doctor = self.execute_select(query)
 
-    def findDateSlots(self, dat):
-        query = PersistencyDML.select_all_timetable + """ WHERE strftime("%d-%m-%Y", DATE_STAMP) = '""" + str(dat) + "'"
+    def findDateSlots(self, dat, doctor_id):
+        query = PersistencyDML.select_all_timetable + \
+                f" WHERE doctor_id = {doctor_id} AND strftime('%d-%m-%Y', DATE_STAMP) = '{dat}'"
         return self.execute_select(query)
 
-    def updateSlot(self, dat, slot):
+    def updateSlot(self, dat, slot, doctor_id):
         query = PersistencyDML.updateTimeSlot + "\"" + str(
-            slot) + """\" WHERE strftime("%d-%m-%Y", DATE_STAMP) = '""" + str(dat) + "'"
+            slot) + """\" WHERE strftime("%d-%m-%Y", DATE_STAMP) = '""" + str(dat) + "'" \
+                + f" AND doctor_id = {doctor_id}"
+
         return self.execute_command(query)
 
     def findFreeDateByDoctor(self, doctor):
         query = f"SELECT strftime('%d-%m-%Y', DATE_STAMP) DATES, TIMESLOT FROM TIMETABLE " \
                 f"WHERE DOCTOR_ID = {doctor}  AND DATE_STAMP BETWEEN DATE(CURRENT_DATE, '-1 days') " \
-                f"AND DATE(CURRENT_DATE, '+30 days')"
+                f"AND DATE(CURRENT_DATE, '+60 days')"
         return self.execute_select(query)
 
     # Prescription
@@ -175,20 +182,28 @@ class Persistency:
     # Appointment
 
     def insertAppointment(self, patient_id, doctor_id, appointment_date, slot):
-        query = f"INSERT INTO APPOINTMENT (patient_id,doctor_id,appointment_date,slot) VALUES ({patient_id},{doctor_id},'{appointment_date}','{slot}')"
+        query = f"INSERT INTO APPOINTMENT (patient_id,doctor_id,appointment_date,slot) " \
+                f"VALUES ({patient_id},{doctor_id},'{appointment_date}','{slot}')"
+
+        return self.execute_command(query)
+
+    def updateAppointment(self, appointment_id, doctor_id, appointment_date, slot):
+        query = f"UPDATE APPOINTMENT SET " \
+                f"doctor_id = {doctor_id}, appointment_date = '{appointment_date}', slot = '{slot}' " \
+                f"WHERE ID = {appointment_id}"
 
         return self.execute_command(query)
 
     def findAppointmentByDoctor(self, doctor):
-        query = f"SELECT p.first_name, p.last_name, a.appointment_date, a. slot" \
-                f"FROM APPOINTMENT a INNER JOIN PATIENT p ON  a.patient_id = p. ID" \
+        query = f"SELECT p.first_name, p.last_name, a.appointment_date, a. slot, a.doctor_id " \
+                f"FROM APPOINTMENT a INNER JOIN PATIENT p ON  a.patient_id = p.ID " \
                 f"WHERE doctor_id = {doctor}"
 
         return self.execute_select(query)
 
     def findAppointmentByPatient(self, patient):
-        query = f"SELECT p.first_name, p.last_name, a.appointment_date, a. slot" \
-                f"FROM APPOINTMENT a INNER JOIN PATIENT p ON  a.patient_id = p. ID" \
+        query = f"SELECT p.first_name, p.last_name, a.appointment_date, a.slot, a.doctor_id, a.ID " \
+                f"FROM APPOINTMENT a INNER JOIN PATIENT p ON a.patient_id = p.ID " \
                 f"WHERE patient_id = {patient}"
 
         return self.execute_select(query)

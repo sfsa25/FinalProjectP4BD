@@ -25,9 +25,14 @@ def menu_admin(logged_user):
     while True:
         opt = Menu.authorize(logged_user)
         try:
-            if opt == '1':
-                # NO INPUTS HERE, PLEASE... HEAD TO MENU
+            if opt == '1.1':
                 Menu.appointment()
+            elif opt == '1.2':
+                Menu.updateAppointment()
+            elif opt == '1.3':
+                Menu.findAppointmentDoctor()
+            elif opt == '1.4':
+                Menu.findAppointmentPatient()
             elif opt == '2.1':
                 doc_name = Menu.get_doctor()
                 new_user = User(doc_name, None, None, None)
@@ -49,8 +54,6 @@ def menu_admin(logged_user):
             elif opt == '3.2':
                 pass
             elif opt == '3.3':
-                pass
-            elif opt == '3.4':
                 Menu.find_prescriptions()
             elif opt == '4':
                 pass
@@ -75,9 +78,7 @@ def menu_doctor(logged_user):
             # findpatient
 
         elif opt == '2':
-            print('Find an appointment')
-            # findpatient
-
+            Menu.findAppointmentDoctor(logged_user.login)
         elif opt == '3':
             Menu.prescription(logged_user.login)
         elif opt == '4':

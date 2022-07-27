@@ -12,11 +12,14 @@ class Appointment(Persistency):
     def insert(self):
         self.insertAppointment(self.patient_id, self.doctor_id,self.date, self.slot)
 
+    def update(self, appointment_id):
+        self.updateAppointment(appointment_id, self.doctor_id, self.date, self.slot)
+
     def findAppointmentDoctor(self, doctor):
         return self.findAppointmentByDoctor(doctor)
 
     def findAppointmentPatient(self, patient):
-        return self.FindAppointmentPatient(patient)
+        return self.findAppointmentByPatient(patient)
 
     def findFreeDate(self, doctor):
         return self.findFreeDateByDoctor(doctor)

@@ -44,8 +44,11 @@ class Doctor(Persistency):
             raise IndexError('Invalid name')
         return self
 
-    def findDoctorID(self, login):
-        return self.findDoctorByID(login)
+    def findDoctorLogin(self, login):
+        return self.findDoctorByLogin(login)
+
+    def findDoctorId(self, id):
+        return self.findDoctorByID(id)
 
     def findDoctorName(self, name):
         return self.findDoctorByName(name)
@@ -53,19 +56,25 @@ class Doctor(Persistency):
     def getallDoctors(self):
         return self.allDoctors()
 
-    def getFreeSlots(self, dat):
+    def getFreeSlots(self, dat, doctor_id):
         if dat is None:
             dat = datetime.now()
-        result = self.findDateSlots(dat)
+        result = self.findDateSlots(dat, doctor_id)
         return re.findall(StaticPatterns.slots, result[0][3])
 
-    def removeSlot(self, dat, slot):
-        result = self.getFreeSlots(dat)
+    def removeSlot(self, dat, slot, doctor_id):
+        result = self.getFreeSlots(dat, doctor_id)
         for slotx in result:
             if slotx == slot:
                 result.remove(slotx)
                 break
 
-        result = self.updateSlot(dat, result)
+        result = self.updateSlot(dat, result, doctor_id)
+
+    def returnSlot(self, dat, slot, doctor_id):
+        result = self.getFreeSlots(dat, doctor_id)
+        result.append(slot)
+
+        self.updateSlot(dat, result, doctor_id)
 
 

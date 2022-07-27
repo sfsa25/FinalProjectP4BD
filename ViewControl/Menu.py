@@ -34,16 +34,19 @@ class Menu:
     def authorize(user):
         if user.role == "ADMIN":
             print("---Welcome admin " + user.name+", login: "+user.login)
-            print("1 - Book an appointment")
+            print("Appointment Menu")
+            print(" -- 1.1 - Book an appointment ")
+            print(" -- 1.2 - Update an appointment")
+            print(" -- 1.3 - Find an appointment by Doctor")
+            print(" -- 1.4 - Find an appointment by Patient")
             print("Doctors Menu:")
             print(" -- 2.1 - Find a doctor ")
             print(" -- 2.2 - Register a new doctor")
             print(" -- 2.3 - Create a schedule")
             print("Patients Menu:")
-            print(" -- 3.1 - Find an appointment")
-            print(" -- 3.2 - Find a patient")
-            print(" -- 3.3 - Register a new patient")
-            print(" -- 3.4 - Find a prescription")
+            print(" -- 3.1 - Find a patient")
+            print(" -- 3.2 - Register a new patient")
+            print(" -- 3.3 - Find a prescription")
             print("4 - Reports")
             print("5 - Exit")
         elif user.role == "DOCTOR":
@@ -106,7 +109,7 @@ class Menu:
         name = input("Patient Name: ")
         patient = Patient().findPatient(name)
         if not patient.empty:
-            doctor = Doctor().findDoctorID(login)
+            doctor = Doctor().findDoctorLogin(login)
             prescribe = Prescription(patient['ID'][0], doctor['ID'][0])
             doctor_name = doctor['NAME'][0]
             list_medication = prescribe.findPrescription()
@@ -147,6 +150,136 @@ class Menu:
     #Appointment
 
     @staticmethod
+    def findAppointmentDoctor(login=None):
+        doctor = None
+        if login is None:
+            doctor_name = input("Doctor Name: ")
+            doctor = Doctor().findDoctorName(doctor_name)
+        else:
+            doctor = Doctor().findDoctorLogin(login)
+
+        if not doctor.empty:
+            doctor_name = doctor['NAME'][0]
+            doctor_id = doctor['ID'][0]
+            appointments = Appointment().findAppointmentDoctor(doctor_id)
+            if len(appointments) > 0:
+                print(f'--- Appointments Doctor {doctor_name}')
+                for app in appointments:
+                    print(f'Patient: {app[0]}  {app[1]}')
+                    print(f'Date: {app[2]} - Time: {app[3]} ')
+            else:
+                print('No appointments were found.')
+        else:
+            print('Doctor not found.\n')
+
+        input("Press Enter to go back to Menu.")
+
+    @staticmethod
+    def findAppointmentPatient():
+        patient_name = input("Patient Name: ")
+        patient = Patient().findPatient(patient_name)
+        if not patient.empty:
+            patient_id = patient['ID'][0]
+            appointments = Appointment().findAppointmentPatient(patient_id)
+            if len(appointments) > 0:
+                print(f'Patient: {patient_name}')
+                print(f'--- Appointments')
+                for app in appointments:
+                    doctor = Doctor().findDoctorId(app[4])
+                    doctor_name = doctor['NAME'][0]
+                    print(f'Date: {app[2]} - Time: {app[3]} with Doctor {doctor_name}')
+            else:
+                print('No appointments were found.')
+        else:
+            print('Patient not found.\n')
+
+        input("Press Enter to go back to Menu.")
+
+    @staticmethod
+    def chooseDateSlot(times):
+        print('Available dates:')
+        for i, time in enumerate(times):
+            print(f'{i} - {time[0]}')
+
+        option = EntryValidation.choose_option(len(times),
+                                               "Choose the date indicated by the number in front: ")
+        chosen_date = times[option][0]
+
+        print(f'Slot times available for {chosen_date} :')
+        slots = re.findall(StaticPatterns.slots, times[option][1])
+        for i, slot in enumerate(slots):
+            print(f'{i} - {slot}')
+
+        option = EntryValidation.choose_option(len(slots),
+                                               "Choose the slot indicated by the number in front: ")
+        chosen_slot = slots[option]
+
+        return [chosen_date, chosen_slot]
+
+    @staticmethod
+    def updateAppointment():
+        patient_name = input("Patient Name: ")
+        patient = Patient().findPatient(patient_name)
+        if not patient.empty:
+            patient_id = patient['ID'][0]
+            appointments = Appointment().findAppointmentPatient(patient_id)
+            if len(appointments) > 0:
+                print(f'Patient: {patient_name}')
+                print(f'--- Appointments')
+
+                for i, app in enumerate(appointments):
+                    doctor = Doctor().findDoctorId(app[4])
+                    doctor_name = doctor['NAME'][0]
+                    print(f'{i} - Date: {app[2]} - Time: {app[3]} with Doctor {doctor_name}')
+
+                option = EntryValidation.choose_option(len(appointments),
+                                                       "Choose the appointment to be changed: ")
+                chose_app = appointments[option]
+
+
+                same_doctor = EntryValidation.choose_option(2,
+                                                            "\nDo you want to reschedule with the same doctor? 1-Yes 2-No ")
+
+                doctor = Doctor()
+                if same_doctor == 2:
+                    doctor_name = input("Doctor Name: ")
+                    doctor = doctor.findDoctorName(doctor_name)
+
+                    while doctor.empty:
+                        print('Doctor not found. Choose again.\n')
+                        doctor_name = input("Doctor Name: ")
+                        doctor = doctor.findDoctorName(doctor_name)
+                else:
+                    doctor = doctor.findDoctorId(chose_app[4])
+
+                doctor_id = doctor['ID'][0]
+                doctor_name = doctor['NAME'][0]
+
+                times = Appointment().findFreeDate(doctor_id)
+                if len(times) > 0:
+                    chosen_date, chosen_slot = Menu.chooseDateSlot(times)
+
+                    appointment = Appointment(patient_id, doctor_id, chosen_date, chosen_slot)
+                    appointment.update(chose_app[5])
+
+                    doctor = Doctor()
+                    doctor.removeSlot(chosen_date, chosen_slot, doctor_id)
+                    doctor.returnSlot(chose_app[2], chose_app[3], doctor_id)
+
+                    print(f'\nAppointment rescheduled for {patient_name} on the day {chosen_date} '
+                          f'with Doctor {doctor_name} between {chosen_slot}\n')
+
+                else:
+                    print('No dates available\n')
+            else:
+                print('No appointments were found.')
+
+        else:
+            print('Patient not found.\n')
+
+        input("\nPress Enter to go back to Menu.")
+
+    @staticmethod
     def appointment():
         patient_name = input("Patient Name: ")
         patient = Patient().findPatient(patient_name)
@@ -159,31 +292,15 @@ class Menu:
                 times = Appointment().findFreeDate(doctor_id)
                 if len(times) > 0:
 
-                    print('Available dates:')
-                    for i, time in enumerate(times):
-                        print(f'{i} - {time[0]}')
-
-                    option = EntryValidation.choose_option(len(times),
-                                                           "Choose the date indicated by the number in front: ")
-                    chosen_date = times[option][0]
-
-                    print(f'Slot times availables for {chosen_date} :')
-                    slots = re.findall(StaticPatterns.slots, times[option][1])
-                    for i, slot in enumerate(slots):
-                        print(f'{i} - {slot}')
-
-                    option = EntryValidation.choose_option(len(slots),
-                                                           "Choose the slot indicated by the number in front: ")
-                    chosen_slot = slots[option]
+                    chosen_date, chosen_slot = Menu.chooseDateSlot(times)
 
                     appointment = Appointment(patient_id, doctor_id,chosen_date,chosen_slot)
                     appointment.insert()
 
-                    Doctor().removeSlot(chosen_date,chosen_slot)
+                    Doctor().removeSlot(chosen_date, chosen_slot, doctor_id)
 
                     print(f'\nAppointment scheduled for {patient_name} on the day {chosen_date} '
                           f'with Doctor {doctor_name} between {chosen_slot}\n')
-
                 else:
                     print('No dates available\n')
             else:
