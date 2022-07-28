@@ -15,12 +15,12 @@ select_doctor_id = "SELECT D.ID, U.NAME FROM DOCTOR D INNER JOIN USER U ON D.USE
 initial_users = """INSERT INTO USER (NAME, LOGIN,USERTYPE,CRYPTOGRAPHIC_PASSWD) VALUES ('ADMIN_NAME','SUPERADMIN', 'ADMIN', '1234')"""
 initial_specialties = """INSERT INTO SPECIALTY (SPECIALTY) values ('Cardiologist'), ('Physician'), ('Family Care')"""
 initial_doctor = """INSERT INTO DOCTOR (USERID, DOCTOR_TYPE, WORKING_DAYS, SHIFTS) VALUES ('1', '1', "['Monday', 'Friday']", "['1', '2']")"""
+initial_patient = """INSERT INTO PATIENT (FIRST_NAME, LAST_NAME, GENDER, DOB, EMAIL, DATA_CREATE) VALUES ('SERGIO', 'FRANCO', "M", 1983-04-26, 'SERGIOAFONSOJR@GMAIL.COM', '2022-07-27')"""
 
 insert_calendar = """INSERT INTO TIMETABLE (DOCTOR_ID, DATE_STAMP, TIMESLOT) VALUES ("""
 insert_user = """INSERT INTO USER (NAME, LOGIN,CRYPTOGRAPHIC_PASSWD, USERTYPE) VALUES ("""
 insert_doctor = """INSERT INTO DOCTOR (USERID, DOCTOR_TYPE, WORKING_DAYS, SHIFTS) VALUES ("""
 
-
-list_initial_data = [initial_users, initial_specialties, initial_doctor]
+list_initial_data = [initial_users, initial_specialties, initial_doctor, initial_patient]
 updateTimeSlot  = "UPDATE TIMETABLE SET TIMESLOT = "
 begin_transaction = "BEGIN TRANSACTION"

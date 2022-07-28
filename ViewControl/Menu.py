@@ -62,7 +62,7 @@ class Menu:
     @staticmethod
     def get_new_doctor():
         print("--->REGISTER A NEW DOCTOR<---")
-        userName = input("PLEASE, TYPE THE DOCTO'S NAME: ")
+        userName = input("PLEASE, TYPE THE DOCTOR'S NAME: ")
         userLogin = input("PLEASE, TYPE THE DOCTOR'S LOGIN: ")
         userPasswd = input("PLEASE, TYPE THE DOCTOR'S PASSWORD:")
         docSpecialty = input("PLEASE, CHOOSE A SPECIALTY ( 1 - Cardiologist, 2 - Physician, 3 - Family Care):")
@@ -195,7 +195,7 @@ class Menu:
 
     @staticmethod
     def chooseDateSlot(times):
-        print('Available dates:')
+        print('\nAvailable dates:')
         for i, time in enumerate(times):
             print(f'{i} - {time[0]}')
 

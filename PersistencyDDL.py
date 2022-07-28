@@ -70,6 +70,6 @@ drop_timetable = """DROP TABLE IF EXISTS TIMETABLE"""
 
 list_create_table = [create_user, create_specialty, create_doctor, create_patient, create_appointment, create_prescription, create_timetable]
 list_drop_table = [drop_doctor, drop_patient, drop_user, drop_specialty, drop_appointment, drop_prescription, drop_timetable]
-db_path = "Database/walkclinic.db"
+db_path = "Database/walkclinic_.db"
 
 

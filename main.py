@@ -90,7 +90,7 @@ def menu_doctor(logged_user):
 
 
 def login():
-    # setup()
+    #setup()
     try:
         auth_info = Menu.menu_auth()
         if session.auth_user(auth_info[0], auth_info[1]):

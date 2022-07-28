@@ -3,6 +3,7 @@ import logging
 import sqlite3
 import PersistencyDDL
 import pandas as pd
+import pandas as pd
 import PersistencyDML
 
 
