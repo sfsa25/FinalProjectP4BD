@@ -31,7 +31,7 @@ class Menu:
     def authorize(user):
         if user.role == "ADMIN":
             print("---Welcome admin " + user.name + ", login: " + user.login)
-            print("Appointment Menu")
+            print("Appointment Menu:")
             print(" -- 1.1 - Book an appointment ")
             print(" -- 1.2 - Update an appointment")
             print(" -- 1.3 - Find an appointment by Doctor")
@@ -49,16 +49,17 @@ class Menu:
         elif user.role == "DOCTOR":
             print("---Welcome doctor " + user.name + ", login: " + user.login)
             print("Doctors Menu:")
-            print("1 - Find a patient ")
-            print("2 - Find an appointment")
-            print("3 - Prescribe")
-            print("4 - Find a prescription ")
-            print("5 - Exit\n")
+            print(" 1 - Find a patient ")
+            print(" 2 - Find an appointment")
+            print(" 3 - Prescribe")
+            print(" 4 - Find a prescription ")
+            print(" 5 - Exit\n")
         elif user.role == "ANALYST":
             print("---Welcome analyst " + user.login + " ---")
-            print(" -- 1.1 - Book an appointment ")
-            print(" -- 1.2 - Update an appointment")
-            print(" -- 1.3 - Find an appointment by Doctor")
+            print(" 1 - Book an appointment ")
+            print(" 2 - Update an appointment")
+            print(" 2 - Find an appointment by Doctor")
+            print(" 5 - Exit\n")
         return input("Please type your chosen option here: \n")
     @staticmethod
     def get_new_doctor():
@@ -82,7 +83,7 @@ class Menu:
 
     @staticmethod
     def doctor_option(doc: Doctor):
-        print('Doctor ' + doc.user.login + ' found! This is (are) his working day(s):' + doc.workingdays)
+        print('Doctor ' + doc.user.login + ' found! This is (are) his/her working day(s):' + doc.workingdays)
         print('What would you like to do?:')
         return input('0 - Exit, 2 - Create an appointment for this doctor')
 
