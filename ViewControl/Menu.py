@@ -56,9 +56,10 @@ class Menu:
             print("5 - Exit\n")
         elif user.role == "ANALYST":
             print("---Welcome analyst " + user.login + " ---")
-
+            print(" -- 1.1 - Book an appointment ")
+            print(" -- 1.2 - Update an appointment")
+            print(" -- 1.3 - Find an appointment by Doctor")
         return input("Please type your chosen option here: \n")
-
     @staticmethod
     def get_new_doctor():
         print("--->REGISTER A NEW DOCTOR<---")
