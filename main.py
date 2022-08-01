@@ -50,9 +50,9 @@ def menu_admin(logged_user):
             elif opt == '2.3':
                 pass
             elif opt == '3.1':
-                pass
+                Menu.find_patient()
             elif opt == '3.2':
-                pass
+                Menu.get_new_patient()
             elif opt == '3.3':
                 Menu.find_prescriptions()
             elif opt == '4':
@@ -74,9 +74,7 @@ def menu_doctor(logged_user):
         opt = Menu.authorize(logged_user)
 
         if opt == '1':
-            print('Find a patient')
-            # findpatient
-
+            Menu.find_patient()
         elif opt == '2':
             Menu.findAppointmentDoctor(logged_user.login)
         elif opt == '3':

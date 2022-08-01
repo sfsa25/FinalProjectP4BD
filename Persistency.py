@@ -225,3 +225,16 @@ class Persistency:
                 f"WHERE patient_id = {patient}"
 
         return self.execute_select(query)
+
+    # PATIENT
+
+    def insertPatient(self, patient_first_name, patient_last_name, patient_gender, patient_dob, patient_email):
+        query = f"INSERT INTO PATIENT (FIRST_NAME,LAST_NAME,GENDER, DOB, EMAIL) " \
+                f"VALUES ('{patient_first_name}','{patient_last_name}','{patient_gender}','{patient_dob}','{patient_email}') "
+
+        return self.execute_command(query)
+
+    def findPatientByFullNameS(self, patient_first_name, patient_last_name):
+        query = f"SELECT * FROM PATIENT WHERE FIRST_NAME = '{patient_first_name}' AND LAST_NAME = '{patient_last_name}'"
+
+        return self.execute_select(query)

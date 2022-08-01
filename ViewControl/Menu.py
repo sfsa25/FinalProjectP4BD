@@ -62,7 +62,7 @@ class Menu:
     @staticmethod
     def get_new_doctor():
         print("--->REGISTER A NEW DOCTOR<---")
-        userName = input("PLEASE, TYPE THE DOCTO'S NAME: ")
+        userName = input("PLEASE, TYPE THE DOCTOR'S NAME: ")
         userLogin = input("PLEASE, TYPE THE DOCTOR'S LOGIN: ")
         userPasswd = input("PLEASE, TYPE THE DOCTOR'S PASSWORD:")
         docSpecialty = input("PLEASE, CHOOSE A SPECIALTY ( 1 - Cardiologist, 2 - Physician, 3 - Family Care):")
@@ -309,3 +309,33 @@ class Menu:
             print('Patient not found.\n')
 
         input("Press Enter to go back to Menu.")
+
+    @staticmethod
+    def get_new_patient():
+        print("--->REGISTER A NEW PATIENT<---")
+        patient_first_name = input("PLEASE, TYPE THE PATIENT'S FIRST NAME: ")
+        patient_last_name = input("PLEASE, TYPE THE PATIENT'S LAST NAME: ")
+        patient_gender = input("PLEASE, TYPE THE PATIENT'S GENDER: (Type F for Female or type M for Male) ")
+        patient_dob = input("PLEASE, TYPE THE PATIENT'S DATE OF BIRTH: (YYYY-MM-DD Format) ")
+        patient_email = input("PLEASE, TYPE THE PATIENT'S E-MAIL: ")
+        patient = Patient(patient_first_name, patient_last_name, patient_gender, patient_dob, patient_email)
+        patient.insert()
+        print('Patient successfully inserted!\n')
+
+    @staticmethod
+    def find_patient():
+        print("--->FIND A PATIENT<---")
+        patient_first_name = input("PLEASE, TYPE THE PATIENT'S FIRST NAME: ")
+        patient_last_name = input("PLEASE, TYPE THE PATIENT'S LAST NAME: ")
+        patientReturned = Patient().findPatientByFullName(patient_first_name, patient_last_name)
+
+        if len(patientReturned) > 0:
+            for i in patientReturned:
+                # Pat.patient_email = l[0]
+                patientId = i[0]
+                firstName = i[1]
+                lastName = i[2]
+
+            print(f'Patient ID: {patientId}, {firstName} {lastName} found in Database.\n')
+        else:
+            print('Patient not found!\n')
