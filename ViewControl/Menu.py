@@ -87,15 +87,14 @@ class Menu:
         return input('0 - Exit, 2 - Create an appointment for this doctor')
 
     @staticmethod
-    def prescription(login):
+    def prescription(login, doc_id):
         name = input("Patient Name: ")
         patient = Patient().findPatient(name)
         if not patient.empty:
             while True:
                 medication = input("Medication: ")
                 observation = input("Observations: ")
-                doctor = Doctor().findDoctorID(login)
-                prescribe = Prescription(patient['ID'][0], doctor['ID'][0], medication, observation)
+                prescribe = Prescription(patient['ID'][0], doc_id, medication, observation)
                 prescribe.insertPrescription()
                 opt = input('Do you want to add another medication? Y-YES X-EXIT \n')
                 if not opt == 'Y':
@@ -104,13 +103,13 @@ class Menu:
             print('Patient not found.\n')
 
     @staticmethod
-    def find_prescriptionsByDoctor(login):
+    def find_prescriptionsByDoctor(login, doctorId, doctor_name):
         name = input("Patient Name: ")
         patient = Patient().findPatient(name)
         if not patient.empty:
-            doctor = Doctor().findDoctorLogin(login)
-            prescribe = Prescription(patient['ID'][0], doctor['ID'][0])
-            doctor_name = doctor['NAME'][0]
+            #doctor = Doctor().findDoctorLogin(login)
+            prescribe = Prescription(patient['ID'][0], doctorId)
+            doctor_name = doctor_name
             list_medication = prescribe.findPrescription()
             if len(list_medication) > 0:
                 print(f'--- Patient: {name}')

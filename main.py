@@ -85,15 +85,14 @@ def menu_admin(logged_user):
 def menu_doctor(logged_user):
     while True:
         opt = Menu.authorize(logged_user)
-
         if opt == '1':
             Menu.find_patient()
         elif opt == '2':
             Menu.findAppointmentDoctor(logged_user.login)
         elif opt == '3':
-            Menu.prescription(logged_user.login)
+            Menu.prescription(logged_user.login, logged_user.id)
         elif opt == '4':
-            Menu.find_prescriptionsByDoctor(logged_user.login)
+            Menu.find_prescriptionsByDoctor(logged_user.login,  logged_user.id, logged_user.name)
         elif opt == '5':
             break
         else:
