@@ -6,8 +6,8 @@
 #       8807728 – Letícia de Moura                                                                                    #
 #       8809338 - Rener Garcia                                                                                        #
 #       8738402 - Jennifer Nelson                                                                                     #
-# README FIRST: The database creation is being performed by the setup method which is called in the line 120 of this  #
-#               file. In order to create it properly it is necessary to uncomment the line 120, and after this make   #
+# README FIRST: The database creation is being performed by the setup method which is called in the line 124 of this  #
+#               file. In order to create it properly it is necessary to uncomment the line 124, and after this make   #
 #               sure to comment it back again. This, not only create the database but also insert a minimum amount    #
 #               of data.                                                                                              #
 # ------------------------------------------------------------------------------------------------------------------- #

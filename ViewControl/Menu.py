@@ -39,7 +39,6 @@ class Menu:
             print("Doctors Menu:")
             print(" -- 2.1 - Find a doctor ")
             print(" -- 2.2 - Register a new doctor")
-            print(" -- 2.3 - Create a schedule")
             print("Patients Menu:")
             print(" -- 3.1 - Find a patient")
             print(" -- 3.2 - Register a new patient")
