@@ -238,3 +238,8 @@ class Persistency:
         query = f"SELECT * FROM PATIENT WHERE FIRST_NAME = '{patient_first_name}' AND LAST_NAME = '{patient_last_name}'"
 
         return self.execute_select(query)
+
+    def findPatientName(self, patient_first_name, patient_last_name):
+        query = f"SELECT * FROM PATIENT WHERE FIRST_NAME = '{patient_first_name}' AND LAST_NAME = '{patient_last_name}'"
+
+        return self.execute_select_pandas(query)

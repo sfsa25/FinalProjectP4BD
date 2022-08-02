@@ -37,49 +37,40 @@ def setup():
 def menu_admin(logged_user):
     while True:
         opt = Menu.authorize(logged_user)
-        try:
-            if opt == '1.1':
-                Menu.appointment()
-            elif opt == '1.2':
-                Menu.updateAppointment()
-            elif opt == '1.3':
-                Menu.findAppointmentDoctor()
-            elif opt == '1.4':
-                Menu.findAppointmentPatient()
-            elif opt == '2.1':
-                doc_name = Menu.get_doctor()
-                new_user = User(doc_name, None, None, None)
-                find_doc = Doctor(new_user, None, None, None, None)
-                new_doctor = find_doc.findDoctor()
-                logging.info('Doctor found! Collecting the actions from the client!')
-                doc_opt = Menu.doctor_option(new_doctor)
-            elif opt == '2.2':
-                # NO INPUTS HERE, PLEASE... HEAD TO MENU
-                new_doctor = Menu.get_new_doctor()
-                new_doctor.save_new_doctor()
-                new_doctor.generateAndSaveCalendar()
-                logging.info('\n ---The new doctor ' + new_doctor.user.name + ' Successfully created! ---\n')
-                print('\n --- The new doctor ' + new_doctor.user.login + ' Successfully created! ---')
-            elif opt == '2.3':
-                pass
-            elif opt == '3.1':
-                Menu.find_patient()
-            elif opt == '3.2':
-                Menu.get_new_patient()
-            elif opt == '3.3':
-                Menu.find_prescriptions()
-            elif opt == '4':
-                pass
-            elif opt == '5':
-                break
-            #else:
-                #raise IndexError(DOCTOR No)
-        except LookupError as e:
-            print("Doctor Not Found! Please try again.\n\n")
-            #raise e
-        except IndexError as ie:
-            print("Information has Invalid format\n\n")
-            #raise ie
+        if opt == '1.1':
+            Menu.appointment()
+        elif opt == '1.2':
+            Menu.updateAppointment()
+        elif opt == '1.3':
+            Menu.findAppointmentDoctor()
+        elif opt == '1.4':
+            Menu.findAppointmentPatient()
+        elif opt == '2.1':
+            doc_name = Menu.get_doctor()
+            new_user = User(doc_name, None, None, None)
+            find_doc = Doctor(new_user, None, None, None, None)
+            new_doctor = find_doc.findDoctor()
+            logging.info('Doctor found! Collecting the actions from the client!')
+            doc_opt = Menu.doctor_option(new_doctor)
+        elif opt == '2.2':
+            new_doctor = Menu.get_new_doctor()
+            new_doctor.save_new_doctor()
+            new_doctor.generateAndSaveCalendar()
+            logging.info('\n ---The new doctor ' + new_doctor.user.name + ' Successfully created! ---\n')
+            print('\n --- The new doctor ' + new_doctor.user.login + ' Successfully created! ---')
+        elif opt == '3.1':
+            Menu.find_patient()
+        elif opt == '3.2':
+            Menu.get_new_patient()
+        elif opt == '3.3':
+            Menu.find_prescriptions()
+        elif opt == '4':
+            pass
+        elif opt == '5':
+            print("Good bye! Thank you for using our Walk-in Clinic Software.")
+            break
+        else:
+            print("Invalid option selected")
 
 
 def menu_doctor(logged_user):
@@ -96,29 +87,30 @@ def menu_doctor(logged_user):
         elif opt == '5':
             break
         else:
-            raise IndexError("Invalid option selected")
+            print("Invalid option selected")
+
 
 def menu_analyst(logged_user):
     while True:
         opt = Menu.authorize(logged_user)
-        if opt == '1':
+        if opt == '1.1':
             Menu.appointment()
-        elif opt == '2':
+        elif opt == '1.2':
             Menu.updateAppointment()
-        elif opt == '3':
+        elif opt == '1.3':
+            Menu.findAppointmentDoctor()
+        elif opt == '1.4':
+            Menu.findAppointmentPatient()
+        elif opt == '2.1':
             Menu.find_patient()
-        elif opt == '4':
-            doc_name = Menu.get_doctor()
-            new_user = User(doc_name, None, None, None)
-            find_doc = Doctor(new_user, None, None, None, None)
-            new_doctor = find_doc.findDoctor()
-            logging.info('Doctor found! Collecting the actions from the client!')
-            doc_opt = Menu.doctor_option(new_doctor)
-        elif opt == '5':
+        elif opt == '2.2':
+            Menu.get_new_patient()
+        elif opt == '3':
             print("Good bye! Thank you for using our Walk-in Clinic Software.")
             break
         else:
-            raise IndexError("Invalid option selected")
+            print("Invalid option selected")
+
 
 def login():
     #setup()

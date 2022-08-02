@@ -55,11 +55,18 @@ class Menu:
             print(" 5 - Exit\n")
         elif user.role == "ANALYST":
             print("---Welcome analyst " + user.login + " ---")
-            print(" 1 - Book an appointment ")
-            print(" 2 - Update an appointment")
-            print(" 2 - Find an appointment by Doctor")
-            print(" 5 - Exit\n")
+            print("Appointment Menu:")
+            print(" -- 1.1 - Book an appointment ")
+            print(" -- 1.2 - Update an appointment")
+            print(" -- 1.3 - Find an appointment by Doctor")
+            print(" -- 1.4 - Find an appointment by Patient")
+            print("Patients Menu:")
+            print(" -- 2.1 - Find a patient")
+            print(" -- 2.2 - Register a new patient")
+            print("3 - Exit")
         return input("Please type your chosen option here: \n")
+
+
     @staticmethod
     def get_new_doctor():
         print("--->REGISTER A NEW DOCTOR<---")
@@ -88,7 +95,7 @@ class Menu:
 
     @staticmethod
     def prescription(login, doc_id):
-        name = input("Patient Name: ")
+        name = input("Patient Full Name: ")
         patient = Patient().findPatient(name)
         if not patient.empty:
             while True:
@@ -102,12 +109,13 @@ class Menu:
         else:
             print('Patient not found.\n')
 
+        input("Press Enter to go back to Menu.")
+
     @staticmethod
     def find_prescriptionsByDoctor(login, doctorId, doctor_name):
-        name = input("Patient Name: ")
+        name = input("Patient Full Name: ")
         patient = Patient().findPatient(name)
         if not patient.empty:
-            #doctor = Doctor().findDoctorLogin(login)
             prescribe = Prescription(patient['ID'][0], doctorId)
             doctor_name = doctor_name
             list_medication = prescribe.findPrescription()
@@ -122,9 +130,11 @@ class Menu:
         else:
             print('Patient not found.\n')
 
+        input("Press Enter to go back to Menu.")
+
     @staticmethod
     def find_prescriptions():
-        name = input("Patient Name: ")
+        name = input("Patient Full Name: ")
         patient = Patient().findPatient(name)
         if not patient.empty:
             doctors = Doctor().getallDoctors()
@@ -138,12 +148,12 @@ class Menu:
                         for med, obs, date in list_medication:
                             print(f'Date Created: {date} - Medication: {med} - Observation {obs}')
                         print()
-                    else:
-                        print('There are no prescriptions for this patient.')
             else:
                 print('There are no registered doctors.')
         else:
             print('Patient not found.\n')
+
+        input("Press Enter to go back to Menu.")
 
     # Appointment
 
@@ -174,7 +184,7 @@ class Menu:
 
     @staticmethod
     def findAppointmentPatient():
-        patient_name = input("Patient Name: ")
+        patient_name = input("Patient Full Name: ")
         patient = Patient().findPatient(patient_name)
         if not patient.empty:
             patient_id = patient['ID'][0]
@@ -218,7 +228,7 @@ class Menu:
     def updateAppointment():
         doctor = Doctor()
 
-        patient_name = input("Patient Name: ")
+        patient_name = input("Patient Full Name: ")
         patient = Patient().findPatient(patient_name)
         if not patient.empty:
             patient_id = patient['ID'][0]
@@ -282,7 +292,7 @@ class Menu:
     @staticmethod
     def appointment():
         doctor = Doctor()
-        patient_name = input("Patient Name: ")
+        patient_name = input("Patient Full Name: ")
         patient = Patient().findPatient(patient_name)
         if not patient.empty:
             patient_id = patient['ID'][0]
@@ -322,6 +332,8 @@ class Menu:
         patient.insert()
         print('Patient successfully inserted!\n')
 
+        input("Press Enter to go back to Menu.")
+
     @staticmethod
     def find_patient():
         print("--->FIND A PATIENT<---")
@@ -339,3 +351,5 @@ class Menu:
             print(f'Patient ID: {patientId}, {firstName} {lastName} found in Database.\n')
         else:
             print('Patient not found!\n')
+
+        input("Press Enter to go back to Menu.")

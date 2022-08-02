@@ -15,9 +15,9 @@ class Patient(Persistency):
 
     # return dataframe
     def findPatient(self, name):
-        sql = f"select id, first_name from patient where first_name like '{name}'"
+        patient_first_name, patient_last_name = name.split()
 
-        return self.execute_select_pandas(sql)
+        return self.findPatientName(patient_first_name, patient_last_name)
 
     def insert(self):
         self.insertPatient(self.patient_first_name, self.patient_last_name, self.patient_gender, self.patient_dob,
