@@ -271,7 +271,7 @@ class Menu:
                     appointment_id = chose_app[5]
 
                     removed_slot = doctor.removeSlot(chosen_date, chosen_slot, doctor_id)
-                    returned_slot = doctor.returnSlot(prior_date, chose_app[3], doctor_id)
+                    returned_slot = doctor.returnSlot(prior_date, chose_app[3],  chose_app[4])
 
                     appointment = Appointment(patient_id, doctor_id, chosen_date, chosen_slot, appointment_id)
                     appointment.update(removed_slot, prior_date, returned_slot)

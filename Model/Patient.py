@@ -26,3 +26,6 @@ class Patient(Persistency):
     def findPatientByFullName(self, patient_first_name, patient_last_name):
 
         return self.findPatientByFullNameS(patient_first_name, patient_last_name)
+
+    def reportPatientByAge(self):
+        return self.findPatientbyAge()

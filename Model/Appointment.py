@@ -23,6 +23,12 @@ class Appointment(Persistency):
     def findAppointmentPatient(self, patient):
         return self.findAppointmentByPatient(patient)
 
+    def reportByDayOfWeek(self):
+        return self.findAppointmentByDayofWeek()
+
+    def reportBySpecialty(self):
+        return self.findAppointmentBySpecialty()
+
 
 
 

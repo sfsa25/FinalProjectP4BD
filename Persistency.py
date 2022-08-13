@@ -226,6 +226,20 @@ class Persistency:
 
         return self.execute_select(query)
 
+    def findAppointmentBySpecialty(self):
+        query = f'SELECT s.SPECIALTY, count(a.ID) FROM APPOINTMENT a ' \
+                f'LEFT JOIN DOCTOR d on d.ID = a.DOCTOR_ID ' \
+                f'LEFT JOIN SPECIALTY s on s.ID = d.DOCTOR_TYPE ' \
+                f'group by SPECIALTY'
+        return self.execute_select(query)
+
+    def findAppointmentByDayofWeek(self):
+        query = f"SELECT strftime('%w',APPOINTMENT_DATE) day_of_week, count(*) 4" \
+                f"FROM APPOINTMENT " \
+                f"GROUP BY day_of_week"
+
+        return self.execute_select(query)
+
     # PATIENT
 
     def insertPatient(self, patient_first_name, patient_last_name, patient_gender, patient_dob, patient_email):
@@ -243,3 +257,8 @@ class Persistency:
         query = f"SELECT * FROM PATIENT WHERE FIRST_NAME = '{patient_first_name}' AND LAST_NAME = '{patient_last_name}'"
 
         return self.execute_select_pandas(query)
+
+    def findPatientbyAge(self):
+        query = f"select cast(strftime('%Y.%m%d', 'now') - strftime('%Y.%m%d', DOB) as int) age from PATIENT"
+
+        return self.execute_select(query)
