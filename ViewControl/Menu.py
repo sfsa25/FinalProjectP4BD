@@ -43,7 +43,10 @@ class Menu:
             print(" -- 3.1 - Find a patient")
             print(" -- 3.2 - Register a new patient")
             print(" -- 3.3 - Find a prescription")
-            print("4 - Reports")
+            print("Reports:")
+            print(" -- 4.1 - Patients by age range. ")
+            print(" -- 4.2 - Appointment by specialty.")
+            print(" -- 4.3 - Appointment by day of the week.")
             print("5 - Exit")
         elif user.role == "DOCTOR":
             print("---Welcome doctor " + user.name + ", login: " + user.login)

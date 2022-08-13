@@ -19,6 +19,7 @@ from Doctor import Doctor
 from ViewControl.Menu import Menu
 from ViewControl.SessionManager import SessionManager
 from Persistency import Persistency
+from Reporting import Reporting
 
 # Initiating dependent classes
 per = Persistency()
@@ -64,8 +65,12 @@ def menu_admin(logged_user):
             Menu.get_new_patient()
         elif opt == '3.3':
             Menu.find_prescriptions()
-        elif opt == '4':
-            pass
+        elif opt == '4.1':
+            Reporting().patientByAge()
+        elif opt == '4.2':
+            Reporting().appointmentBySpecialty()
+        elif opt == '4.3':
+            Reporting().appointmentByDayOfWeek()
         elif opt == '5':
             print("Good bye! Thank you for using our Walk-in Clinic Software.")
             break

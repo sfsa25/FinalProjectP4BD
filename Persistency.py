@@ -227,18 +227,25 @@ class Persistency:
         return self.execute_select(query)
 
     def findAppointmentBySpecialty(self):
-        query = f'SELECT s.SPECIALTY, count(a.ID) FROM APPOINTMENT a ' \
+        query = f'SELECT s.SPECIALTY, count(a.ID) count FROM APPOINTMENT a ' \
                 f'LEFT JOIN DOCTOR d on d.ID = a.DOCTOR_ID ' \
                 f'LEFT JOIN SPECIALTY s on s.ID = d.DOCTOR_TYPE ' \
                 f'group by SPECIALTY'
-        return self.execute_select(query)
+        return self.execute_select_pandas(query)
 
     def findAppointmentByDayofWeek(self):
-        query = f"SELECT strftime('%w',APPOINTMENT_DATE) day_of_week, count(*) 4" \
+        query = f"SELECT case cast(strftime('%w',APPOINTMENT_DATE) as integer)  " \
+                f"when 0 then 'Sunday' " \
+                f"when 1 then 'Monday' " \
+                f"when 2 then 'Tuesday' " \
+                f"when 3 then 'Wednesday' " \
+                f"when 4 then 'Thursday' " \
+                f"when 5 then 'Friday' else 'Saturday' end day_of_week, " \
+                f"count(*) count, strftime('%w',APPOINTMENT_DATE) sort " \
                 f"FROM APPOINTMENT " \
                 f"GROUP BY day_of_week"
 
-        return self.execute_select(query)
+        return self.execute_select_pandas(query)
 
     # PATIENT
 
@@ -261,4 +268,4 @@ class Persistency:
     def findPatientbyAge(self):
         query = f"select cast(strftime('%Y.%m%d', 'now') - strftime('%Y.%m%d', DOB) as int) age from PATIENT"
 
-        return self.execute_select(query)
+        return self.execute_select_pandas(query)
